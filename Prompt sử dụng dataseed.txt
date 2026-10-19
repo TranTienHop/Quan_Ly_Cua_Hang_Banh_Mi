@@ -1,0 +1,55 @@
+Bạn là lập trình viên C# WinForms. Nhiệm vụ: viết lại/viết tiếp code cho ĐÚNG 1 CHỨC NĂNG CỤ THỂ của project này để chạy trên DATABASE MỚI có sẵn. Database là nguồn sự thật (source of truth) — code phải theo database, KHÔNG được sửa database.
+
+YÊU CẦU TRỌNG TÂM: Chỉ tập trung triển khai duy nhất 1 chức năng được chỉ định dưới đây. KHÔNG tự ý viết code cho các chức năng khác chưa được yêu cầu.
+
+=========================================
+CHỨC NĂNG CẦN THỰC HIỆN TRONG LẦN NÀY:
+👉 Chức năng:
+
+=========================================
+
+## 1. Bối cảnh project
+- Ứng dụng: Quản lý bán hàng & tồn nguyên liệu cho chuỗi cửa hàng bánh mì (đa chi nhánh).
+- Công nghệ: C# WinForms, .NET 10 (net10.0-windows), SQL Server Express, ADO.NET với package Microsoft.Data.SqlClient (KHÔNG dùng Entity Framework, KHÔNG dùng Dapper).
+- Mở bằng file BaiTap_WinForms.slnx. Code nằm trong thư mục BaiTap_WinForms\:
+  - Data\DatabaseHelper.cs   — lớp truy cập DB (ExecuteQuery, ExecuteNonQuery, ExecuteScalar, TestConnection)
+  - Models\UserSession.cs    — lưu thông tin người đăng nhập
+  - Forms\FormLogin.cs       — đăng nhập
+  - Forms\FormMain.cs        — màn hình chính (chứa menu/tab chức năng)
+- Quy ước code: đọc và tuân theo CODING_RULES.md ở thư mục gốc.
+
+## 2. Database (BẮT BUỘC đọc kỹ trước khi code)
+- database\01_TaoBang_Khoa.sql — tạo DB `QuanLyBanhMi`, 35 bảng, PK/FK/UNIQUE/CHECK.
+- database\02_DuLieuMau.sql    — dữ liệu mẫu (tháng 9/2026, 3 chi nhánh).
+Hãy đọc kỹ các bảng liên quan đến chức năng đang làm trong file 01 và 02 để nắm tên bảng, tên cột, kiểu dữ liệu, ràng buộc. Không được đoán tên cột.
+
+## 3. Những điểm quan trọng của database mới (dễ sai)
+1. Tên DB là `QuanLyBanhMi`. Connection string mẫu:
+   Server=localhost\SQLEXPRESS;Database=QuanLyBanhMi;Trusted_Connection=True;TrustServerCertificate=True;
+   Tên instance (SQLEXPRESS / SQLEXPRESS01 / ...) tuỳ máy — đặt ở MỘT chỗ duy nhất trong DatabaseHelper.cs.
+2. MẬT KHẨU (nếu liên quan): cột TaiKhoan.MatKhauBam là NVARCHAR(255), lưu SHA-256 dạng CHUỖI HEX IN HOA (64 ký tự). Cách băm trong C#:
+   `Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(matKhau)))`
+3. Khoá chính đều là INT IDENTITY → không chèn tay giá trị khoá. Cột MaCode (vd NV001, CN01, ADMIN) là mã nghiệp vụ UNIQUE.
+4. Database KHÔNG có VIEW, STORED PROCEDURE, FUNCTION hay TRIGGER nào. Viết hoàn toàn bằng câu lệnh T-SQL trong C#. Không được tạo thêm object vào DB.
+5. Đa chi nhánh: Nhân viên thuộc 1 chi nhánh (NhanVien.MaChiNhanh). Dữ liệu hiển thị cho MANAGER/STAFF phải lọc theo chi nhánh của người đăng nhập (`UserSession.MaChiNhanh`); ADMIN xem được tất cả.
+6. Tiếng Việt: Truyền tham số chuỗi dạng SqlDbType.NVarChar.
+
+## 4. Phạm vi công việc cần hoàn thành
+- Chỉ sửa/viết mới các file liên quan trực tiếp đến chức năng: Quản lý thực đơn (và bổ sung helper/model phụ trợ nếu chức năng này bắt buộc cần).
+- Nếu chức năng cần thao tác Transaction (ví dụ: Bán hàng / Nhập kho), hãy bổ sung overload cho `DatabaseHelper.cs` để hỗ trợ `SqlConnection` và `SqlTransaction`.
+- Tên Form mới (nếu có) đặt ĐÚNG bằng giá trị `MaForm` trong bảng `MenuChucNang`.
+
+## 5. Quy tắc bắt buộc khi viết Code
+- Luôn dùng parameterized query, không nối chuỗi SQL với dữ liệu người dùng.
+- Bọc mọi lệnh gọi DB trong try-catch, báo lỗi bằng MessageBox tiếng Việt.
+- Số tiền định dạng culture vi-VN, "N0" + " đ".
+- DataGridView: AutoGenerateColumns = false, định nghĩa cột trước rồi mới gán DataSource.
+- Giữ cách đặt tên control theo CODING_RULES.md (lbl, txt, btn, dgv, cbo, ...).
+- Không sửa file SQL trong thư mục database\, không tạo bảng/view/proc mới.
+
+## 6. Báo cáo sau khi code xong
+- Liệt kê các file đã chỉnh sửa/tạo mới.
+- Giải thích tóm tắt logic xử lý của chức năng này.
+- Nêu rõ các giả định nghiệp vụ (nếu có) hoặc các điểm lưu ý khi chạy kiểm thử chức năng này.
+
+
