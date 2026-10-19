@@ -1,0 +1,205 @@
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.AssemblyReference.cache
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.AssemblyInfoInputs.cache
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.AssemblyInfo.cs
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.CoreCompileInputs.cache
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.exe
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.deps.json
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.runtimeconfig.json
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.pdb
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Bcl.Cryptography.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.Extensions.Abstractions.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.Internal.Logging.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Logging.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Protocols.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Tokens.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.SqlServer.Server.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\cs\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\pl\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\tr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\unix\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_W.4CDB0404.Up2Date
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\refint\BaiTap_WinForms.dll
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.pdb
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.genruntimeconfig.cache
+C:\Users\quoc_\source\repos\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\ref\BaiTap_WinForms.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.exe
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.deps.json
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.runtimeconfig.json
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.pdb
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Bcl.Cryptography.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.Extensions.Abstractions.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.Internal.Logging.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Logging.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.SqlServer.Server.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\cs\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\pl\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\tr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\unix\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.AssemblyReference.cache
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.AssemblyInfoInputs.cache
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.AssemblyInfo.cs
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.CoreCompileInputs.cache
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_W.4CDB0404.Up2Date
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\refint\BaiTap_WinForms.dll
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.pdb
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.genruntimeconfig.cache
+C:\Users\Tien Hop\Desktop\BaiTap_WinForms\BaiTap_WinForms\obj\Debug\net10.0-windows\ref\BaiTap_WinForms.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\refint\BaiTap_WinForms.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.pdb
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.exe
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.deps.json
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.runtimeconfig.json
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\BaiTap_WinForms.pdb
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Bcl.Cryptography.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.Extensions.Abstractions.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Data.SqlClient.Internal.Logging.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Options.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Primitives.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Abstractions.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Logging.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Protocols.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.IdentityModel.Tokens.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\Microsoft.SqlServer.Server.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\System.IdentityModel.Tokens.Jwt.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\cs\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\de\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\es\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\fr\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\it\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\ja\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\ko\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\pl\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\pt-BR\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\ru\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\tr\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\unix\lib\net9.0\Microsoft.Data.SqlClient.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win\lib\net9.0\Microsoft.Data.SqlClient.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\bin\Debug\net10.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.AssemblyReference.cache
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.GeneratedMSBuildEditorConfig.editorconfig
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.AssemblyInfoInputs.cache
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.AssemblyInfo.cs
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.CoreCompileInputs.cache
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_W.4CDB0404.Up2Date
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.genruntimeconfig.cache
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\ref\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-build\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-build\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-build\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-build\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-build\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-recheck\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-recheck\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-recheck\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-recheck\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-recheck\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-final-build\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-final-build\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-final-build\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-final-build\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-final-build\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build\BaiTap_WinForms.pdb
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.Forms.FormLogin.resources
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.Forms.FormMain.resources
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.csproj.GenerateResource.cache
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build-final\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build-final\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build-final\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build-final\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-control-build-final\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final2\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final2\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final2\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final2\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final2\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final3\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final3\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final3\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final3\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build-final3\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-verified\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-verified\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-verified\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-verified\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-verified\BaiTap_WinForms.pdb
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build\BaiTap_WinForms.exe
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build\BaiTap_WinForms.deps.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build\BaiTap_WinForms.runtimeconfig.json
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build\BaiTap_WinForms.dll
+C:\Users\tranp\.codex\visualizations\2026\10\18\01a14f24-d9a4-7cc2-8c10-961cd29e4ea2\menu-designer-build\BaiTap_WinForms.pdb
+E:\BanhMi\BaiTap_WinForms_27_9 (1)\BaiTap_WinForms_27_9\BaiTap_WinForms\obj\Debug\net10.0-windows\BaiTap_WinForms.Forms.MenuManagementControl.resources
