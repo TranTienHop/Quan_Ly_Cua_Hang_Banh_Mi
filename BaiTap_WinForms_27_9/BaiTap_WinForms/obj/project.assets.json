@@ -965,23 +965,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tien Hop\\.nuget\\packages\\": {},
+    "C:\\Users\\quoc_\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tien Hop\\Desktop\\BaiTap_WinForms_27_9\\BaiTap_WinForms_27_9\\BaiTap_WinForms\\BaiTap_WinForms.csproj",
+      "projectUniqueName": "C:\\Users\\quoc_\\Downloads\\BaiTap_WinForms_27_9\\BaiTap_WinForms_27_9\\BaiTap_WinForms\\BaiTap_WinForms.csproj",
       "projectName": "BaiTap_WinForms",
-      "projectPath": "C:\\Users\\Tien Hop\\Desktop\\BaiTap_WinForms_27_9\\BaiTap_WinForms_27_9\\BaiTap_WinForms\\BaiTap_WinForms.csproj",
-      "packagesPath": "C:\\Users\\Tien Hop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tien Hop\\Desktop\\BaiTap_WinForms_27_9\\BaiTap_WinForms_27_9\\BaiTap_WinForms\\obj\\",
+      "projectPath": "C:\\Users\\quoc_\\Downloads\\BaiTap_WinForms_27_9\\BaiTap_WinForms_27_9\\BaiTap_WinForms\\BaiTap_WinForms.csproj",
+      "packagesPath": "C:\\Users\\quoc_\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\quoc_\\Downloads\\BaiTap_WinForms_27_9\\BaiTap_WinForms_27_9\\BaiTap_WinForms\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Tien Hop\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\quoc_\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1041,7 +1041,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

@@ -10,7 +10,7 @@ namespace BaiTap_WinForms.Data
     {
         // Chuỗi kết nối đến SQL Server localhost\SQLEXPRESS01
         public static string ConnectionString { get; set; } =
-            "Server=localhost\\SQL2025;Database=QuanLyBanhMi;Trusted_Connection=True;TrustServerCertificate=True;";
+        "Server=localhost\\SQLEXPRESS01;Database=QuanLyBanhMi;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public static SqlConnection GetConnection()
         {
