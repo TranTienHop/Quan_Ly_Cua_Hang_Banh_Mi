@@ -1,0 +1,190 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "QuanLyBanhMiContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1763",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "QuanLyCuaHangBanhMi",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[CauHinh_HangThanhVien]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChiNhanh]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChiTiet_DieuChuyen]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChiTiet_HoaDon]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChiTiet_HuyHaoHut]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChiTiet_KiemKho]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChiTiet_NhapHang]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Combo_ChiTiet]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CongThuc]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DanhMuc]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DonVi]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GiaoDich_TichDiem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HoaDon]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[KhachHang]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[KhuyenMai]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MenuChucNang]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NguyenLieu]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NhaCungCap]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NhanVien]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NhatKy_CaLam]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NhatKy_GiaoHang]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NhatKy_Kho]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Phieu_DieuChuyen]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Phieu_HuyHaoHut]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Phieu_KiemKho]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Phieu_NhapHang]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[QuyDoi_DonVi]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SanPham]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SanPham_ChiNhanh]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TaiKhoan]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ThanhToan_HoaDon]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ThietBi]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TonKho_ChiNhanh]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VaiTro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VaiTro_Menu]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false,
+   "UseTypedTvpParameters": true
+}
