@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using QuanLyCuaHangBanhMi.Data;
 using QuanLyCuaHangBanhMi.Forms;
 using QuanLyCuaHangBanhMi.Models;
 
@@ -15,11 +16,18 @@ namespace QuanLyCuaHangBanhMi
         {
             ApplicationConfiguration.Initialize();
 
+            DatabaseHelper.ConfigureConnectionString(DatabaseConfiguration.LoadConnectionString());
+            var services = ApplicationServices.CreateDefault();
+
             // Đăng nhập → FormMain. BÁN HÀNG mở FormOrder. Đăng xuất → login.
             while (true)
             {
-                using var loginForm = new FormLogin();
-                if (loginForm.ShowDialog() != DialogResult.OK) break;
+                using var loginForm = new FormLogin(services.AuthService);
+                if (loginForm.ShowDialog() != DialogResult.OK)
+                {
+                    UserSession.Clear();
+                    break;
+                }
 
                 using var mainForm = new FormMain();
                 Application.Run(mainForm);

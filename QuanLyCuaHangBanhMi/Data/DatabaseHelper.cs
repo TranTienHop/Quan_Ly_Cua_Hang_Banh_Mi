@@ -9,8 +9,23 @@ namespace QuanLyCuaHangBanhMi.Data
     public static class DatabaseHelper
     {
         // Dùng chung một database và một SQL Server instance cho toàn ứng dụng.
-        public static string ConnectionString { get; set; } =
+        public const string DefaultConnectionString =
             "Server=(localdb)\\MSSQLLocalDB;Database=QuanLyBanhMi;Trusted_Connection=True;TrustServerCertificate=True;";
+
+        private static string _connectionString = DefaultConnectionString;
+
+        public static string ConnectionString
+        {
+            get => _connectionString;
+            private set => _connectionString = value;
+        }
+
+        public static void ConfigureConnectionString(string? connectionString)
+        {
+            ConnectionString = string.IsNullOrWhiteSpace(connectionString)
+                ? DefaultConnectionString
+                : connectionString.Trim();
+        }
 
         public static SqlConnection GetConnection()
         {

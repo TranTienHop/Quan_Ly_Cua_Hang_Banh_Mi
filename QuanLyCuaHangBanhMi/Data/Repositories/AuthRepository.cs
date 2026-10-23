@@ -7,23 +7,35 @@ namespace QuanLyCuaHangBanhMi.Data.Repositories
     /// <summary>Lớp Data — truy vấn tài khoản / đăng nhập.</summary>
     public static class AuthRepository
     {
-        public static DataTable FindByCredentials(string username, string passwordHash)
+        public static DataTable FindByUsername(string username)
         {
             const string query = @"
-                SELECT tk.MaTaiKhoan, tk.MaNhanVien, tk.TenDangNhap, tk.DangHoatDong,
+                SELECT tk.MaTaiKhoan, tk.MaNhanVien, tk.TenDangNhap, tk.MatKhauBam, tk.DangHoatDong,
                        nv.DangHoatDong AS NhanVienDangHoatDong,
                        vt.MaVaiTro AS MaVaiTroId, vt.MaCode AS MaVaiTro,
                        nv.HoTen, nv.ChucVu, nv.MaChiNhanh
                 FROM dbo.TaiKhoan tk
                 JOIN dbo.VaiTro vt ON tk.MaVaiTro = vt.MaVaiTro
                 JOIN dbo.NhanVien nv ON tk.MaNhanVien = nv.MaNhanVien
-                WHERE tk.TenDangNhap = @TenDangNhap AND tk.MatKhauBam = @MatKhauBam";
+                WHERE tk.TenDangNhap = @TenDangNhap";
 
             return DatabaseHelper.ExecuteQuery(query, new[]
             {
-                new SqlParameter("@TenDangNhap", SqlDbType.NVarChar, 50) { Value = username },
-                new SqlParameter("@MatKhauBam", SqlDbType.NVarChar, 255) { Value = passwordHash }
+                new SqlParameter("@TenDangNhap", SqlDbType.NVarChar, 50) { Value = username }
             });
+        }
+
+        public static void UpdatePasswordHash(int accountId, string passwordHash)
+        {
+            DatabaseHelper.ExecuteNonQuery(@"
+                UPDATE dbo.TaiKhoan
+                SET MatKhauBam = @MatKhauBam
+                WHERE MaTaiKhoan = @MaTaiKhoan",
+                new[]
+                {
+                    DatabaseHelper.Param("@MaTaiKhoan", SqlDbType.Int, accountId),
+                    DatabaseHelper.Param("@MatKhauBam", SqlDbType.NVarChar, passwordHash, 255)
+                });
         }
 
         public static DataTable GetPermissionCodes(int roleId)

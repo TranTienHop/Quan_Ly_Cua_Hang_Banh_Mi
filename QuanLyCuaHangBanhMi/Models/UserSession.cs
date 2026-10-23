@@ -14,10 +14,10 @@ namespace QuanLyCuaHangBanhMi.Models
         public static string RoleName { get; set; } = string.Empty;
         public static string Position { get; set; } = string.Empty;
 
-        public static bool IsAdmin => RoleName.Equals("ADMIN", StringComparison.OrdinalIgnoreCase);
+        public static bool IsAdmin => RoleName.Equals(RoleCodes.Admin, StringComparison.OrdinalIgnoreCase);
 
         public static bool IsManagerOrAdmin =>
-            IsAdmin || RoleName.Equals("MANAGER", StringComparison.OrdinalIgnoreCase);
+            IsAdmin || RoleName.Equals(RoleCodes.Manager, StringComparison.OrdinalIgnoreCase);
 
         private static readonly HashSet<string> Permissions =
             new(StringComparer.OrdinalIgnoreCase);

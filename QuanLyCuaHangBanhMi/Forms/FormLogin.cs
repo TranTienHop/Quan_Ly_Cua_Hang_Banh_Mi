@@ -10,10 +10,16 @@ namespace QuanLyCuaHangBanhMi.Forms
 {
     public partial class FormLogin : Form
     {
-        private readonly IAuthService _authService = new AuthServiceImpl();
+        private readonly IAuthService _authService;
 
-        public FormLogin()
+        // Giữ constructor không tham số để Visual Studio Designer vẫn mở được form.
+        public FormLogin() : this(new AuthServiceImpl())
         {
+        }
+
+        public FormLogin(IAuthService authService)
+        {
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             InitializeComponent();
             AcceptButton = btnLogin;
             CancelButton = btnExit;

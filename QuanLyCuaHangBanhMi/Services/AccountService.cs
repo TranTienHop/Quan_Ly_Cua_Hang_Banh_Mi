@@ -3,6 +3,7 @@ using System.Data;
 using QuanLyCuaHangBanhMi.Data;
 using QuanLyCuaHangBanhMi.Data.Repositories;
 using QuanLyCuaHangBanhMi.Models;
+using QuanLyCuaHangBanhMi.Security;
 
 namespace QuanLyCuaHangBanhMi.Services
 {
@@ -78,7 +79,7 @@ namespace QuanLyCuaHangBanhMi.Services
             if (AccountRepository.UsernameExists(username))
                 throw new InvalidOperationException("Tên đăng nhập đã tồn tại.");
 
-            string passwordHash = DatabaseHelper.HashPasswordSHA256(model.Password);
+            string passwordHash = PasswordHasher.Hash(model.Password);
             return AccountRepository.Insert(
                 model.EmployeeId, model.RoleId, username, passwordHash, model.IsActive);
         }
@@ -90,7 +91,7 @@ namespace QuanLyCuaHangBanhMi.Services
                 throw new ArgumentException("Tài khoản không hợp lệ.", nameof(accountId));
             ValidatePassword(newPassword, nameof(newPassword));
 
-            string passwordHash = DatabaseHelper.HashPasswordSHA256(newPassword);
+            string passwordHash = PasswordHasher.Hash(newPassword);
             if (AccountRepository.ResetPassword(accountId, passwordHash) == 0)
                 throw new InvalidOperationException("Tài khoản không tồn tại.");
         }

@@ -4,6 +4,7 @@ using System.Data;
 using QuanLyCuaHangBanhMi.Data;
 using QuanLyCuaHangBanhMi.Data.Repositories;
 using QuanLyCuaHangBanhMi.Models;
+using QuanLyCuaHangBanhMi.Security;
 using QuanLyCuaHangBanhMi.Services.Abstractions;
 
 namespace QuanLyCuaHangBanhMi.Services
@@ -14,12 +15,15 @@ namespace QuanLyCuaHangBanhMi.Services
         public LoginStatus TryLogin(string username, string password, out LoginResult? result)
         {
             result = null;
-            string hash = DatabaseHelper.HashPasswordSHA256(password);
-            DataTable dt = AuthRepository.FindByCredentials(username, hash);
+            DataTable dt = AuthRepository.FindByUsername(username.Trim());
             if (dt.Rows.Count == 0)
                 return LoginStatus.InvalidCredentials;
 
             DataRow row = dt.Rows[0];
+            string passwordHash = row["MatKhauBam"].ToString() ?? string.Empty;
+            if (!PasswordHasher.Verify(password, passwordHash))
+                return LoginStatus.InvalidCredentials;
+
             bool isActive = Convert.ToBoolean(row["DangHoatDong"]) && Convert.ToBoolean(row["NhanVienDangHoatDong"]);
             int roleId = Convert.ToInt32(row["MaVaiTroId"]);
             IReadOnlyCollection<string> permissionCodes = isActive
@@ -33,7 +37,7 @@ namespace QuanLyCuaHangBanhMi.Services
                 RoleId = roleId,
                 Username = row["TenDangNhap"].ToString() ?? "",
                 FullName = row["HoTen"].ToString() ?? "",
-                RoleName = row["MaVaiTro"].ToString() ?? "",
+                RoleName = RoleCodes.Normalize(row["MaVaiTro"].ToString()),
                 Position = row["ChucVu"].ToString() ?? "",
                 IsActive = isActive,
                 PermissionCodes = permissionCodes
@@ -43,6 +47,8 @@ namespace QuanLyCuaHangBanhMi.Services
                 return LoginStatus.Locked;
 
             ApplySession(result);
+            if (PasswordHasher.NeedsRehash(passwordHash))
+                AuthRepository.UpdatePasswordHash(result.UserId, PasswordHasher.Hash(password));
             AuthRepository.UpdateLastLogin(result.UserId);
             return LoginStatus.Success;
         }
