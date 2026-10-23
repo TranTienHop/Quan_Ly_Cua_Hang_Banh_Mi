@@ -1,0 +1,11 @@
+# Build and IDE artifacts
+**/[Bb]in/
+**/[Oo]bj/
+**/.vs/
+*.user
+*.suo
+*.cache
+
+# Local configuration and diagnostics
+appsettings.Local.json
+*.log
