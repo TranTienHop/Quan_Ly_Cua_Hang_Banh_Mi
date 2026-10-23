@@ -78,8 +78,51 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SelectMenuSection(int index)
         {
+            string permission = index switch
+            {
+                0 => PermissionCodes.MenuCategory,
+                1 => PermissionCodes.MenuProduct,
+                2 => PermissionCodes.MenuUnit,
+                3 => PermissionCodes.MenuPrice,
+                _ => string.Empty
+            };
+            if (!UserSession.HasPermission(permission))
+                return;
+
             tabMenuSections.SelectedIndex = index;
             UpdateMenuNavigationStyle();
+        }
+
+        private void ApplyMenuPermissions()
+        {
+            var sections = new (Button Button, Panel Editor, string Permission, int Index)[]
+            {
+                (btnMenuCategories, pnlMenuCategoryEditor, PermissionCodes.MenuCategory, 0),
+                (btnMenuProducts, pnlMenuProductEditor, PermissionCodes.MenuProduct, 1),
+                (btnMenuUnits, pnlMenuUnitEditor, PermissionCodes.MenuUnit, 2),
+                (btnMenuPrices, pnlMenuPriceEditor, PermissionCodes.MenuPrice, 3)
+            };
+
+            foreach (var section in sections)
+            {
+                bool allowed = UserSession.HasPermission(section.Permission);
+                section.Button.Visible = allowed;
+                section.Editor.Enabled = allowed;
+            }
+
+            var firstAllowed = sections.FirstOrDefault(s => UserSession.HasPermission(s.Permission));
+            if (firstAllowed.Button != null)
+                SelectMenuSection(firstAllowed.Index);
+        }
+
+        private static bool DemandMenuPermission(string permission)
+        {
+            if (UserSession.HasPermission(permission))
+                return true;
+
+            MessageBox.Show("Tài khoản không có quyền thực hiện thao tác này.", "Không đủ quyền",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
 
         private void UpdateMenuNavigationStyle()
@@ -261,15 +304,25 @@ namespace QuanLyCuaHangBanhMi.Forms
         }
         public void LoadMenuData()
         {
-            LoadMenuBranchOptions();
-            LoadMenuCategoryPage();
-            LoadMenuUnitPage();
-            LoadMenuProductLookups();
-            LoadMenuProductPage();
-            LoadMenuPriceProductLookup();
-            LoadMenuPricePage();
-            UpdateMenuPriceEditorState();
-            UpdateMenuBranchBadge();
+            ApplyMenuPermissions();
+
+            if (UserSession.HasPermission(PermissionCodes.MenuCategory))
+                LoadMenuCategoryPage();
+            if (UserSession.HasPermission(PermissionCodes.MenuUnit))
+                LoadMenuUnitPage();
+            if (UserSession.HasPermission(PermissionCodes.MenuProduct))
+            {
+                LoadMenuProductLookups();
+                LoadMenuProductPage();
+            }
+            if (UserSession.HasPermission(PermissionCodes.MenuPrice))
+            {
+                LoadMenuBranchOptions();
+                LoadMenuPriceProductLookup();
+                LoadMenuPricePage();
+                UpdateMenuPriceEditorState();
+                UpdateMenuBranchBadge();
+            }
         }
 
         private void LoadMenuBranchOptions()
@@ -577,6 +630,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveMenuCategory(bool isNew)
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuCategory)) return;
             string name = txtMenuCategoryName.Text.Trim();
             if (name.Length == 0)
             {
@@ -615,6 +669,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ToggleMenuCategory()
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuCategory)) return;
             if (_selectedMenuCategoryId == 0)
             {
                 MessageBox.Show("Hãy chọn danh mục cần thay đổi trạng thái.", "Chưa chọn danh mục", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -678,6 +733,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveMenuProduct(bool isNew)
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuProduct)) return;
             string name = txtMenuProductName.Text.Trim();
             string sku = txtMenuProductSku.Text.Trim();
             if (name.Length == 0)
@@ -735,6 +791,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void DeactivateMenuProduct()
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuProduct)) return;
             if (_selectedMenuProductId == 0)
             {
                 MessageBox.Show("Hãy chọn sản phẩm cần ngừng kinh doanh.", "Chưa chọn sản phẩm", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -776,6 +833,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveMenuUnit(bool isNew)
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuUnit)) return;
             string name = txtMenuUnitName.Text.Trim();
             if (name.Length == 0 || cboMenuUnitType.SelectedItem == null)
             {
@@ -812,6 +870,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void DeleteMenuUnit()
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuUnit)) return;
             if (_selectedMenuUnitId == 0)
             {
                 MessageBox.Show("Hãy chọn đơn vị cần xóa.", "Chưa chọn đơn vị", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -897,6 +956,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveMenuPrice(bool updateSelected)
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuPrice)) return;
             if (updateSelected && (_selectedMenuPriceProductId == 0 || _selectedMenuPriceBranchId == 0))
             {
                 MessageBox.Show("Chọn một dòng giá trong danh sách trước khi cập nhật.", "Chưa chọn giá", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -964,6 +1024,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ToggleMenuPriceAvailability()
         {
+            if (!DemandMenuPermission(PermissionCodes.MenuPrice)) return;
             if (_selectedMenuPriceProductId == 0 || _selectedMenuPriceBranchId == 0)
             {
                 MessageBox.Show("Hãy chọn dòng giá bán cần thay đổi trạng thái.", "Chưa chọn giá", MessageBoxButtons.OK, MessageBoxIcon.Warning);

@@ -703,6 +703,7 @@ namespace QuanLyCuaHangBanhMi.Forms
         // Tag của nút = HinhThuc trong ThanhToan_HoaDon (TienMat / ChuyenKhoan / The / Vi)
         private void btnPayment_Click(object? sender, EventArgs e)
         {
+            if (!DemandPermission(PermissionCodes.PosPayment)) return;
             if (sender is Button { Tag: string code }) SetPaymentMethod(code);
         }
 
@@ -733,6 +734,14 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void FormOrder_Load(object? sender, EventArgs e)
         {
+            if (!DemandPermission(PermissionCodes.PosOrder))
+            {
+                _skipCloseConfirm = true;
+                Close();
+                return;
+            }
+
+            ApplyOrderPermissions();
             if (!LoadBranchInfo())
             {
                 IsLoggedOut = true;
@@ -749,6 +758,34 @@ namespace QuanLyCuaHangBanhMi.Forms
             UpdateClock();
             tmrClock.Start();
             ActiveControl = flpProducts;
+        }
+
+        private void ApplyOrderPermissions()
+        {
+            bool canUseCustomer = UserSession.HasPermission(PermissionCodes.PosCustomer);
+            txtCustomerPhone.Enabled = canUseCustomer;
+            btnFindCustomer.Enabled = canUseCustomer;
+            btnClearCustomer.Enabled = canUseCustomer;
+            numRedeemPoints.Enabled = canUseCustomer;
+
+            bool canPay = UserSession.HasPermission(PermissionCodes.PosPayment);
+            foreach (Control control in flpPayRadios.Controls)
+                control.Enabled = canPay;
+            btnPayTienMat.Enabled = canPay;
+            btnPayChuyenKhoan.Enabled = canPay;
+            btnPayThe.Enabled = canPay;
+            btnPayVi.Enabled = canPay;
+            btnCheckout.Enabled = canPay && _cartTable.Rows.Count > 0;
+
+            chkPrintReceipt.Checked = UserSession.HasPermission(PermissionCodes.PosPrint);
+        }
+
+        private static bool DemandPermission(string permission)
+        {
+            if (UserSession.HasPermission(permission)) return true;
+            MessageBox.Show("Tài khoản không có quyền thực hiện thao tác này.", "Không đủ quyền",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
 
         private bool LoadBranchInfo()
@@ -1396,6 +1433,11 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void FindCustomer(bool silent)
         {
+            if (!UserSession.HasPermission(PermissionCodes.PosCustomer))
+            {
+                if (!silent) DemandPermission(PermissionCodes.PosCustomer);
+                return;
+            }
             string phone = new string(txtCustomerPhone.Text.Where(char.IsDigit).ToArray());
             if (phone.Length == 0)
             {
@@ -1706,7 +1748,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
                 dgvCart.Columns["colName"]!.HeaderText = soMon > 0 ? $"Tên món  ({soMon} món)" : "Tên món";
                 bool hasItems = _cartTable.Rows.Count > 0;
-                btnCheckout.Enabled = hasItems;
+                btnCheckout.Enabled = hasItems && UserSession.HasPermission(PermissionCodes.PosPayment);
                 btnClearOrder.Enabled = hasItems;
                 btnParkOrder.Enabled = hasItems;
 
@@ -1910,11 +1952,12 @@ namespace QuanLyCuaHangBanhMi.Forms
             {
                 ("🛒  BÁN HÀNG", null, true),
                 ("🏠  Tổng Quan", 0, true),
-                ("🥪  Thực Đơn (Món)", 1, HasAny("MENU_CAT", "MENU_DISH", "MENU_UNIT", "MENU_PRICE", "MENU_COMBO")),
-                ("👤  Khách Hàng", 2, UserSession.HasPermission("POS_CUST")),
-                ("🎁  Chương Trình KM", 3, UserSession.HasPermission("MENU_PROMO")),
-                ("🥬  Kho Nguyên Liệu", 4, HasAny("INV_MAT", "INV_IO", "INV_TRANSFER", "INV_CHECK", "INV_WARN")),
-                ("📊  Báo Cáo Doanh Thu", 5, HasAny("RPT_REV", "RPT_TOP", "RPT_STOCK", "RPT_CHART", "RPT_EXPORT")),
+                ("🥪  Thực Đơn (Món)", 1, HasAny(PermissionCodes.MenuCategory, PermissionCodes.MenuProduct, PermissionCodes.MenuUnit, PermissionCodes.MenuPrice)),
+                ("👤  Khách Hàng", 2, UserSession.HasPermission(PermissionCodes.PosCustomer)),
+                ("🎁  Chương Trình KM", 3, UserSession.HasPermission(PermissionCodes.MenuPromotion)),
+                ("🥬  Kho Nguyên Liệu", 4, HasAny(PermissionCodes.InventoryMaterial, PermissionCodes.InventoryWarning)),
+                ("📊  Báo Cáo Doanh Thu", 5, HasAny(PermissionCodes.ReportRevenue, PermissionCodes.ReportTopProduct,
+                    PermissionCodes.ReportStock, PermissionCodes.ReportChart, PermissionCodes.ReportExport)),
                 ("⚙  Quản Trị", 6, HasAny("SYS_ACCOUNT", "SYS_ROLE", "SYS_BRANCH", "SYS_SHIFT"))
             };
 
@@ -2004,7 +2047,8 @@ namespace QuanLyCuaHangBanhMi.Forms
                 parked.DropDownItems.Add(clearAll);
             }
             mnuOrders.Items.Add(parked);
-            mnuOrders.Items.Add("Đơn trong ngày", null, (s, e) => OpenTodayOrders());
+            if (UserSession.HasPermission(PermissionCodes.PosSearch))
+                mnuOrders.Items.Add("Đơn trong ngày", null, (s, e) => OpenTodayOrders());
             mnuOrders.Show(btnOrders, new Point(0, btnOrders.Height));
         }
 
@@ -2064,6 +2108,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void Checkout()
         {
+            if (!DemandPermission(PermissionCodes.PosPayment)) return;
             CommitCartEdit();
             Recalculate();
 
@@ -2180,7 +2225,7 @@ namespace QuanLyCuaHangBanhMi.Forms
                 done.AppendLine($"Điểm tích lũy:  +{_diemCong:N0}" + (_diemTru > 0 ? $"  /  -{_diemTru:N0}" : ""));
             MessageBox.Show(done.ToString(), "✅ Thanh toán thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            if (chkPrintReceipt.Checked)
+            if (chkPrintReceipt.Checked && UserSession.HasPermission(PermissionCodes.PosPrint))
                 ReceiptPrinter.ShowPreview(this, maHoaDon, _paymentMethod == "TienMat" ? tienKhachDua : null, _paymentMethod == "TienMat" ? tienThoi : null);
 
             ResetOrder();
@@ -2194,6 +2239,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void OpenTodayOrders()
         {
+            if (!DemandPermission(PermissionCodes.PosSearch)) return;
             using var dlg = new FormDonHomNay(_maChiNhanh, _tenChiNhanh);
             dlg.ShowDialog(this);
         }
@@ -2236,6 +2282,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             switch (keyData)
             {
                 case Keys.F3:
+                    if (!DemandPermission(PermissionCodes.PosCustomer)) return true;
                     txtCustomerPhone.Focus();
                     txtCustomerPhone.SelectAll();
                     return true;

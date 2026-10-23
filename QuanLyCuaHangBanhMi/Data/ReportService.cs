@@ -7,14 +7,14 @@ namespace QuanLyCuaHangBanhMi.Data
 {
     /// <summary>
     /// Service xử lý toàn bộ truy vấn dữ liệu cho Module Báo Cáo & Thống Kê (Admin)
-    /// Hỗ trợ CSDL QuanLyBanhMi (chính) và tương thích dự phòng với BanhMiShopDB.
+    /// Chỉ sử dụng CSDL chuẩn QuanLyBanhMi. Không tự động chuyển sang schema legacy.
     /// </summary>
     public static class ReportService
     {
         private static bool? _isQuanLyBanhMi = null;
 
         /// <summary>
-        /// Kiểm tra CSDL hiện tại có phải là QuanLyBanhMi (chứa bảng dbo.HoaDon) hay không
+        /// Xác nhận kết nối đang trỏ tới schema chuẩn QuanLyBanhMi.
         /// </summary>
         public static bool IsQuanLyBanhMi()
         {
@@ -22,11 +22,17 @@ namespace QuanLyCuaHangBanhMi.Data
             try
             {
                 object? result = DatabaseHelper.ExecuteScalar("SELECT OBJECT_ID('dbo.HoaDon', 'U')");
-                _isQuanLyBanhMi = (result != null && result != DBNull.Value);
+                if (result == null || result == DBNull.Value)
+                    throw new InvalidOperationException("CSDL hiện tại không có schema QuanLyBanhMi (thiếu dbo.HoaDon).");
+                _isQuanLyBanhMi = true;
             }
-            catch
+            catch (InvalidOperationException)
             {
-                _isQuanLyBanhMi = false;
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Không thể xác nhận schema QuanLyBanhMi.", ex);
             }
             return _isQuanLyBanhMi.Value;
         }

@@ -31,6 +31,8 @@ namespace QuanLyCuaHangBanhMi.Forms
             lblUserInfo.Text = $"Xin chào: {UserSession.FullName} ({UserSession.RoleName})";
 
             ApplyNavigationPermissions();
+            ApplyInventoryPermissions();
+            ApplyReportPermissions();
 
             LoadDashboardTab();
             if (CanAccessTab(1)) LoadProductsTab();
@@ -64,7 +66,7 @@ namespace QuanLyCuaHangBanhMi.Forms
         {
             if (sender == btnNavPOS)
             {
-                if (!UserSession.HasPermission("POS_ORDER")) return;
+                if (!UserSession.HasPermission(PermissionCodes.PosOrder)) return;
                 panelSidebar.Visible = false;
                 OpenOrderScreen();
                 return;
@@ -116,6 +118,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void OpenOrderScreen()
         {
+            if (!UserSession.HasPermission(PermissionCodes.PosOrder)) return;
             using var orderForm = new FormOrder();
             Hide();
             orderForm.ShowDialog(this);
@@ -146,7 +149,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ApplyNavigationPermissions()
         {
-            btnNavPOS.Visible = UserSession.HasPermission("POS_ORDER");
+            btnNavPOS.Visible = UserSession.HasPermission(PermissionCodes.PosOrder);
             btnNavProducts.Visible = CanAccessTab(1);
             btnNavCustomers.Visible = CanAccessTab(2);
             btnNavPromos.Visible = CanAccessTab(3);
@@ -158,11 +161,12 @@ namespace QuanLyCuaHangBanhMi.Forms
         private static bool CanAccessTab(int tabIndex) => tabIndex switch
         {
             0 => true,
-            1 => HasAnyPermission("MENU_CAT", "MENU_DISH", "MENU_UNIT", "MENU_PRICE", "MENU_COMBO"),
-            2 => UserSession.HasPermission("POS_CUST"),
-            3 => UserSession.HasPermission("MENU_PROMO"),
-            4 => HasAnyPermission("INV_MAT", "INV_IO", "INV_TRANSFER", "INV_CHECK", "INV_WARN"),
-            5 => HasAnyPermission("RPT_REV", "RPT_TOP", "RPT_STOCK", "RPT_CHART", "RPT_EXPORT"),
+            1 => HasAnyPermission(PermissionCodes.MenuCategory, PermissionCodes.MenuProduct, PermissionCodes.MenuUnit, PermissionCodes.MenuPrice),
+            2 => UserSession.HasPermission(PermissionCodes.PosCustomer),
+            3 => UserSession.HasPermission(PermissionCodes.MenuPromotion),
+            4 => HasAnyPermission(PermissionCodes.InventoryMaterial, PermissionCodes.InventoryWarning),
+            5 => HasAnyPermission(PermissionCodes.ReportRevenue, PermissionCodes.ReportTopProduct, PermissionCodes.ReportStock,
+                PermissionCodes.ReportChart, PermissionCodes.ReportExport),
             6 => HasAnyPermission("SYS_ACCOUNT", "SYS_ROLE", "SYS_BRANCH", "SYS_SHIFT"),
             _ => false
         };
@@ -334,7 +338,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
 
             int quickColumn = 0;
-            if (UserSession.HasPermission("POS_ORDER"))
+            if (UserSession.HasPermission(PermissionCodes.PosOrder))
                 AddQuick(quickColumn++, "🛒", "Bán hàng", Color.FromArgb(230, 126, 34), () =>
                 {
                     panelSidebar.Visible = false;
@@ -503,23 +507,38 @@ namespace QuanLyCuaHangBanhMi.Forms
 
                 DateTime today = DateTime.Today;
                 int branchId = UserSession.IsAdmin ? 0 : UserSession.MaChiNhanh;
-                var summary = ReportService.GetRevenueSummary(today, today, branchId);
-
-                lblDashRevenue.Text = summary.TotalRevenue.ToString("N0", _vnCulture) + " đ";
-                lblDashOrders.Text = summary.TotalOrders.ToString("N0", _vnCulture);
-                lblDashDiscount.Text = summary.TotalDiscount.ToString("N0", _vnCulture) + " đ";
-                lblDashAov.Text = summary.AverageOrderValue.ToString("N0", _vnCulture) + " đ";
+                if (UserSession.HasPermission(PermissionCodes.ReportRevenue))
+                {
+                    var summary = ReportService.GetRevenueSummary(today, today, branchId);
+                    lblDashRevenue.Text = summary.TotalRevenue.ToString("N0", _vnCulture) + " đ";
+                    lblDashOrders.Text = summary.TotalOrders.ToString("N0", _vnCulture);
+                    lblDashDiscount.Text = summary.TotalDiscount.ToString("N0", _vnCulture) + " đ";
+                    lblDashAov.Text = summary.AverageOrderValue.ToString("N0", _vnCulture) + " đ";
+                }
+                else
+                {
+                    lblDashRevenue.Text = "—";
+                    lblDashOrders.Text = "—";
+                    lblDashDiscount.Text = "—";
+                    lblDashAov.Text = "—";
+                }
 
                 int lowStock = 0;
                 try
                 {
-                    var inv = ReportService.GetInventoryConsumptionReport(branchId, true, "", today.AddDays(-7), today);
-                    lowStock = inv.Rows.Count;
+                    if (UserSession.HasPermission(PermissionCodes.InventoryWarning)
+                        || UserSession.HasPermission(PermissionCodes.ReportStock))
+                    {
+                        var inv = ReportService.GetInventoryConsumptionReport(branchId, true, "", today.AddDays(-7), today);
+                        lowStock = inv.Rows.Count;
+                    }
                 }
                 catch { /* bỏ qua nếu chưa có dữ liệu kho */ }
                 lblDashLowStock.Text = lowStock.ToString("N0", _vnCulture);
 
-                DataTable top = ReportService.GetBestSellerReport(today, today, branchId, 0, 8, true);
+                DataTable top = UserSession.HasPermission(PermissionCodes.ReportTopProduct)
+                    ? ReportService.GetBestSellerReport(today, today, branchId, 0, 8, true)
+                    : new DataTable();
                 dgvDashTopProducts.DataSource = top;
                 foreach (DataGridViewColumn col in dgvDashTopProducts.Columns)
                 {
@@ -764,6 +783,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveCustomer(bool isNew)
         {
+            if (!UserSession.HasPermission(PermissionCodes.PosCustomer)) return;
             string name = txtCustName.Text.Trim();
             string phone = new string(txtCustPhone.Text.Where(char.IsDigit).ToArray());
             if (string.IsNullOrWhiteSpace(name) || phone.Length < 9)
@@ -819,6 +839,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void DeactivateCustomer()
         {
+            if (!UserSession.HasPermission(PermissionCodes.PosCustomer)) return;
             if (_selectedCustomerId == 0)
             {
                 MessageBox.Show("Vui lòng chọn khách cần ngưng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1263,6 +1284,9 @@ namespace QuanLyCuaHangBanhMi.Forms
         private NumericUpDown numIngCurrentStock = null!;
         private NumericUpDown numIngMinStock = null!;
         private NumericUpDown numIngCost = null!;
+        private GroupBox grpIngredientEditor = null!;
+        private Button btnSaveIngredient = null!;
+        private Button btnAddIngredientStock = null!;
         private int _selectedIngredientID = 0;
 
         private void InitializeIngredientsTab()
@@ -1309,14 +1333,14 @@ namespace QuanLyCuaHangBanhMi.Forms
             dgvIngredients.BringToFront();
 
             // Form cập nhật
-            var grpForm = new GroupBox
+            grpIngredientEditor = new GroupBox
             {
-                Text = "QUẢN LÝ NGUYÊN LIỆU",
+                Text = "QUẢN LÝ NGUYÊN LIỆU — CHƯA KÍCH HOẠT GHI DỮ LIỆU",
                 Dock = DockStyle.Fill,
                 Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
                 Padding = new Padding(15)
             };
-            split.Panel2.Controls.Add(grpForm);
+            split.Panel2.Controls.Add(grpIngredientEditor);
 
             int y = 30;
             var l1 = new Label { Text = "Mã nguyên liệu:", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
@@ -1343,24 +1367,44 @@ namespace QuanLyCuaHangBanhMi.Forms
             numIngCost = new NumericUpDown { Location = new Point(20, y + 22), Size = new Size(280, 26), Maximum = 10000000, Increment = 1000, Font = new Font("Segoe UI", 9.5F) };
 
             y += 60;
-            var btnSaveIng = new Button { Text = "💾 Lưu / Cập Nhật", Location = new Point(20, y), Size = new Size(135, 36), BackColor = Color.FromArgb(41, 128, 185), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            btnSaveIng.FlatAppearance.BorderSize = 0;
-            btnSaveIng.Click += (s, e) => SaveIngredient();
+            btnSaveIngredient = new Button { Text = "💾 Lưu / Cập Nhật", Location = new Point(20, y), Size = new Size(135, 36), BackColor = Color.FromArgb(41, 128, 185), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            btnSaveIngredient.FlatAppearance.BorderSize = 0;
+            btnSaveIngredient.Click += (s, e) => SaveIngredient();
 
-            var btnAddStock = new Button { Text = "📥 Nhập Thêm", Location = new Point(165, y), Size = new Size(135, 36), BackColor = Color.FromArgb(39, 174, 96), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            btnAddStock.FlatAppearance.BorderSize = 0;
-            btnAddStock.Click += (s, e) => QuickAddStock();
+            btnAddIngredientStock = new Button { Text = "📥 Nhập Thêm", Location = new Point(165, y), Size = new Size(135, 36), BackColor = Color.FromArgb(39, 174, 96), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            btnAddIngredientStock.FlatAppearance.BorderSize = 0;
+            btnAddIngredientStock.Click += (s, e) => QuickAddStock();
 
-            grpForm.Controls.AddRange(new Control[]
+            grpIngredientEditor.Controls.AddRange(new Control[]
             {
                 l1, txtIngCode, l2, txtIngName, l3, txtIngUnit,
                 l4, numIngCurrentStock, l5, numIngMinStock, l6, numIngCost,
-                btnSaveIng, btnAddStock
+                btnSaveIngredient, btnAddIngredientStock
             });
+        }
+
+        private void ApplyInventoryPermissions()
+        {
+            bool canManageMaterials = UserSession.HasPermission(PermissionCodes.InventoryMaterial);
+            bool canViewWarnings = UserSession.HasPermission(PermissionCodes.InventoryWarning);
+
+            chkLowStockOnly.Visible = canViewWarnings;
+            if (!canManageMaterials && canViewWarnings)
+                chkLowStockOnly.Checked = true;
+
+            // Repository hiện đọc schema QuanLyBanhMi nhưng thao tác ghi vẫn dùng bảng legacy dbo.Ingredients.
+            // Giữ màn hình tra cứu/cảnh báo hoạt động; khóa ghi cho đến khi có luồng nhập kho + ledger đúng schema.
+            grpIngredientEditor.Enabled = false;
+            btnSaveIngredient.Enabled = false;
+            btnAddIngredientStock.Enabled = false;
         }
 
         private void LoadIngredientsTab()
         {
+            if (!UserSession.HasPermission(PermissionCodes.InventoryMaterial)
+                && !UserSession.HasPermission(PermissionCodes.InventoryWarning))
+                return;
+
             try
             {
                 DataTable dt = IngredientService.GetAll(chkLowStockOnly.Checked);
@@ -1579,6 +1623,9 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SwitchReportSubTab(int index)
         {
+            if (!UserSession.HasPermission(ReportPermissionForIndex(index)))
+                return;
+
             _currentReportSubIndex = index;
 
             var buttons = new[] { btnSubNavRev, btnSubNavBestSeller, btnSubNavInventory, btnSubNavChart, btnSubNavExport };
@@ -1609,6 +1656,38 @@ namespace QuanLyCuaHangBanhMi.Forms
                 case 2: LoadInventoryReport(); break;
                 case 3: LoadChartReport(); break;
                 case 4: LoadExportPreview(); break;
+            }
+        }
+
+        private static string ReportPermissionForIndex(int index) => index switch
+        {
+            0 => PermissionCodes.ReportRevenue,
+            1 => PermissionCodes.ReportTopProduct,
+            2 => PermissionCodes.ReportStock,
+            3 => PermissionCodes.ReportChart,
+            4 => PermissionCodes.ReportExport,
+            _ => string.Empty
+        };
+
+        private void ApplyReportPermissions()
+        {
+            var buttons = new[] { btnSubNavRev, btnSubNavBestSeller, btnSubNavInventory, btnSubNavChart, btnSubNavExport };
+            int firstAllowed = -1;
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                bool allowed = UserSession.HasPermission(ReportPermissionForIndex(i));
+                buttons[i].Visible = allowed;
+                if (allowed && firstAllowed < 0) firstAllowed = i;
+            }
+
+            rdoExpRev.Enabled = UserSession.HasPermission(PermissionCodes.ReportRevenue);
+            rdoExpBestSeller.Enabled = UserSession.HasPermission(PermissionCodes.ReportTopProduct);
+            rdoExpInv.Enabled = UserSession.HasPermission(PermissionCodes.ReportStock);
+
+            if (firstAllowed >= 0)
+            {
+                _currentReportSubIndex = firstAllowed;
+                SwitchReportSubTab(firstAllowed);
             }
         }
 
@@ -1681,6 +1760,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void LoadRevenueReport()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportRevenue)) return;
             try
             {
                 int branchId = 0;
@@ -1721,6 +1801,8 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ExportRevenueData(bool isHtml)
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportRevenue)
+                || !UserSession.HasPermission(PermissionCodes.ReportExport)) return;
             if (dgvRevenue.DataSource is not DataTable dt || dt.Rows.Count == 0)
             {
                 MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1811,6 +1893,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void LoadBestSellerReport()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportTopProduct)) return;
             try
             {
                 int branchId = 0;
@@ -1893,6 +1976,8 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ExportBestSellerData(bool isHtml)
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportTopProduct)
+                || !UserSession.HasPermission(PermissionCodes.ReportExport)) return;
             if (dgvBestSeller.DataSource is not DataTable dt || dt.Rows.Count == 0)
             {
                 MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1993,6 +2078,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void LoadInventoryReport()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportStock)) return;
             try
             {
                 int branchId = 0;
@@ -2041,6 +2127,8 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ExportInventoryData(bool isHtml)
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportStock)
+                || !UserSession.HasPermission(PermissionCodes.ReportExport)) return;
             if (dgvInventory.DataSource is not DataTable dt || dt.Rows.Count == 0)
             {
                 MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2129,6 +2217,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void LoadChartReport()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportChart)) return;
             try
             {
                 int branchId = 0;
@@ -2188,6 +2277,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveChartImage()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportChart)) return;
             using var sfd = new SaveFileDialog
             {
                 Filter = "Hình ảnh PNG (*.png)|*.png|Tất cả tệp (*.*)|*.*",
@@ -2326,6 +2416,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void LoadExportPreview()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportExport) || !CanAccessSelectedExportReport()) return;
             try
             {
                 int branchId = 0;
@@ -2363,6 +2454,7 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void ExecuteExportFile()
         {
+            if (!UserSession.HasPermission(PermissionCodes.ReportExport) || !CanAccessSelectedExportReport()) return;
             try
             {
                 int branchId = 0;
@@ -2461,6 +2553,14 @@ namespace QuanLyCuaHangBanhMi.Forms
             {
                 MessageBox.Show("Lỗi khởi tạo Báo Cáo & Thống Kê: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private bool CanAccessSelectedExportReport()
+        {
+            if (rdoExpRev.Checked) return UserSession.HasPermission(PermissionCodes.ReportRevenue);
+            if (rdoExpBestSeller.Checked) return UserSession.HasPermission(PermissionCodes.ReportTopProduct);
+            if (rdoExpInv.Checked) return UserSession.HasPermission(PermissionCodes.ReportStock);
+            return false;
         }
 
         private static void BindCombo(ComboBox cbo, DataTable dt, string displayMember, string valueMember)

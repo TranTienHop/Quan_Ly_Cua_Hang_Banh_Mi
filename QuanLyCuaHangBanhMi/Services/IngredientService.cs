@@ -1,6 +1,7 @@
 using System.Data;
 using QuanLyCuaHangBanhMi.Data.Repositories;
 using QuanLyCuaHangBanhMi.Models;
+using QuanLyCuaHangBanhMi.Security;
 
 namespace QuanLyCuaHangBanhMi.Services
 {
@@ -10,6 +11,7 @@ namespace QuanLyCuaHangBanhMi.Services
 
         public static void Save(IngredientSaveModel model)
         {
+            AuthorizationGuard.Demand(PermissionCodes.InventoryMaterial);
             if (model.IngredientId > 0)
                 IngredientRepository.Update(model);
             else

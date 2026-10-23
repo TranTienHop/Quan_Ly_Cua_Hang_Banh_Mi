@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using QuanLyCuaHangBanhMi.Models;
 using QuanLyCuaHangBanhMi.Services;
 
 namespace QuanLyCuaHangBanhMi.Forms
@@ -39,6 +40,15 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void FormDonHomNay_Load(object? sender, EventArgs e)
         {
+            if (!UserSession.HasPermission(PermissionCodes.PosSearch))
+            {
+                MessageBox.Show("Tài khoản không có quyền tra cứu hóa đơn.", "Không đủ quyền",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Close();
+                return;
+            }
+
+            btnPrint.Visible = UserSession.HasPermission(PermissionCodes.PosPrint);
             splOrders.SplitterDistance = (int)(splOrders.Height * 0.62);
             LoadOrders();
         }
@@ -105,6 +115,12 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void PrintSelected()
         {
+            if (!UserSession.HasPermission(PermissionCodes.PosPrint))
+            {
+                MessageBox.Show("Tài khoản không có quyền in hóa đơn.", "Không đủ quyền",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             int? maHoaDon = SelectedOrderId();
             if (maHoaDon.HasValue) ReceiptPrinter.ShowPreview(this, maHoaDon.Value);
         }

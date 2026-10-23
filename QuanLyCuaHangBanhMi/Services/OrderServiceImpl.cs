@@ -6,6 +6,7 @@ using System.Linq;
 using QuanLyCuaHangBanhMi.Data.Repositories;
 using QuanLyCuaHangBanhMi.Models;
 using QuanLyCuaHangBanhMi.Services.Abstractions;
+using QuanLyCuaHangBanhMi.Security;
 
 namespace QuanLyCuaHangBanhMi.Services
 {
@@ -36,7 +37,11 @@ namespace QuanLyCuaHangBanhMi.Services
         public DataTable GetActivePromotions(int maChiNhanh)
             => PromotionRepository.GetActiveForBranch(maChiNhanh);
 
-        public DataTable GetPosMenu(int maChiNhanh) => OrderRepository.GetPosMenu(maChiNhanh);
+        public DataTable GetPosMenu(int maChiNhanh)
+        {
+            AuthorizationGuard.Demand(PermissionCodes.PosOrder);
+            return OrderRepository.GetPosMenu(maChiNhanh);
+        }
 
         public List<(string TenNguyenLieu, decimal SoLuong)> GetRecipe(int maSanPham)
         {
@@ -53,15 +58,29 @@ namespace QuanLyCuaHangBanhMi.Services
             }
         }
 
-        public DataTable FindCustomerByPhone(string phone) => CustomerRepository.FindByPhone(phone);
+        public DataTable FindCustomerByPhone(string phone)
+        {
+            AuthorizationGuard.Demand(PermissionCodes.PosCustomer);
+            return CustomerRepository.FindByPhone(phone);
+        }
 
         public CheckoutResult Checkout(CheckoutRequest request, IFormatProvider? numberFormat = null)
-            => OrderRepository.SaveCheckout(request, numberFormat ?? CultureInfo.GetCultureInfo("vi-VN"));
+        {
+            AuthorizationGuard.Demand(PermissionCodes.PosOrder);
+            AuthorizationGuard.Demand(PermissionCodes.PosPayment);
+            return OrderRepository.SaveCheckout(request, numberFormat ?? CultureInfo.GetCultureInfo("vi-VN"));
+        }
 
         public DataTable GetOrdersByDate(int maChiNhanh, DateTime ngay)
-            => OrderHistoryRepository.GetOrdersByDate(maChiNhanh, ngay);
+        {
+            AuthorizationGuard.Demand(PermissionCodes.PosSearch);
+            return OrderHistoryRepository.GetOrdersByDate(maChiNhanh, ngay);
+        }
 
         public DataTable GetOrderDetails(int maHoaDon)
-            => OrderHistoryRepository.GetOrderDetails(maHoaDon);
+        {
+            AuthorizationGuard.Demand(PermissionCodes.PosSearch);
+            return OrderHistoryRepository.GetOrderDetails(maHoaDon);
+        }
     }
 }
