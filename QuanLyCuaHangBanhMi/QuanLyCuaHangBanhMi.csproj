@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Forms\AccountManagementControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\AccountManagementControl.Designer.cs">
+      <DependentUpon>AccountManagementControl.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\AdministrationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\AdministrationControl.Designer.cs">
+      <DependentUpon>AdministrationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\RoleManagementControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\RoleManagementControl.Designer.cs">
+      <DependentUpon>RoleManagementControl.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\BranchManagementControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\BranchManagementControl.Designer.cs">
+      <DependentUpon>BranchManagementControl.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\ShiftManagementControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\ShiftManagementControl.Designer.cs">
+      <DependentUpon>ShiftManagementControl.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

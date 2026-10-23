@@ -1,0 +1,295 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\forms\\formorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\formmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\formghichumon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formghichumon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\formchonkhuyenmai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formchonkhuyenmai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\models\\quanlybanhmicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\models\\quanlybanhmicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\data\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\data\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\services\\receiptservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\services\\receiptservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|d:\\btl_lttq\\\u0111\u1ED3ng b\u1ED9 d\u1EF1 \u00E1n\\quan_ly_cua_hang_banh_mi-main\\quanlycuahangbanhmi\\services\\promotionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\services\\promotionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\reportchartview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\reportchartview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\formtuychinhmon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formtuychinhmon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\quanlycuahangbanhmi\\forms\\formdonhomnay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2B416FCE-E34A-35AE-B99F-DBA5FD57ABA0}|QuanLyCuaHangBanhMi\\QuanLyCuaHangBanhMi.csproj|solutionrelative:quanlycuahangbanhmi\\forms\\formdonhomnay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CustomerService.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\CustomerService.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Services\\CustomerService.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\CustomerService.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Services\\CustomerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:22:23.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FormLogin.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormLogin.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormLogin.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormLogin.cs [Design]",
+              "RelativeToolTip": "..\\..\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormLogin.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:02:47.986Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FormChonKhuyenMai.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormChonKhuyenMai.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormChonKhuyenMai.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormChonKhuyenMai.cs [Design]",
+              "RelativeToolTip": "..\\..\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormChonKhuyenMai.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:03:12.264Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FormOrder.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormOrder.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormOrder.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormOrder.cs [Design]",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Forms\\FormOrder.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:02:53.608Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DatabaseHelper.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Data\\DatabaseHelper.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Data\\DatabaseHelper.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Data\\DatabaseHelper.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Data\\DatabaseHelper.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:22:42.267Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FormGhiChuMon.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormGhiChuMon.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormGhiChuMon.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormGhiChuMon.cs [Design]",
+              "RelativeToolTip": "..\\..\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormGhiChuMon.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:03:02.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FormMain.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormMain.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormMain.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormMain.cs [Design]",
+              "RelativeToolTip": "..\\..\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormMain.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:02:32.914Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "QuanLyBanhMiContext.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Models\\QuanLyBanhMiContext.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Models\\QuanLyBanhMiContext.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Models\\QuanLyBanhMiContext.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Models\\QuanLyBanhMiContext.cs",
+              "ViewState": "AgIAAEcCAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:23:04.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EmployeeService.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\EmployeeService.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Services\\EmployeeService.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\EmployeeService.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Services\\EmployeeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:24:17.006Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Microsoft.Common.CurrentVersion.targets",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ViewState": "AgIAAG4NAAAAAAAAAAAawIENAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2026-10-21T20:12:19.118Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "OrderService.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\OrderService.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Services\\OrderService.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\OrderService.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Services\\OrderService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:22:27.149Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "PromotionService.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\PromotionService.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Services\\PromotionService.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\PromotionService.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Services\\PromotionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:22:29.262Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ReceiptService.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\ReceiptService.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Services\\ReceiptService.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\ReceiptService.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Services\\ReceiptService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:22:33.938Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Services\\AuthService.cs",
+              "ToolTip": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Services\\AuthService.cs",
+              "RelativeToolTip": "QuanLyCuaHangBanhMi\\Services\\AuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:24:11.798Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ReportChartView.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\ReportChartView.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\ReportChartView.cs",
+              "ToolTip": "C:\\Users\\Tien Hop\\Desktop\\khanh_phuc\\Quan_Ly_Cua_Hang_Banh_Mi\\Quan_Li_Cua_Hang_Banh_Mi_21_10\\QuanLyCuaHangBanhMi\\Forms\\ReportChartView.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:06:31.814Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "FormTuyChinhMon.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormTuyChinhMon.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormTuyChinhMon.cs",
+              "ToolTip": "C:\\Users\\Tien Hop\\Desktop\\khanh_phuc\\Quan_Ly_Cua_Hang_Banh_Mi\\BaiTap_WinForms_27_9_2\\QuanLyCuaHangBanhMi\\Forms\\FormTuyChinhMon.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:02:51.911Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "FormDonHomNay.cs [Design]",
+              "DocumentMoniker": "D:\\BTL_LTTQ\\\u0110\u1ED2NG B\u1ED8 D\u1EF0 \u00C1N\\Quan_Ly_Cua_Hang_Banh_Mi-main\\QuanLyCuaHangBanhMi\\Forms\\FormDonHomNay.cs",
+              "RelativeDocumentMoniker": "QuanLyCuaHangBanhMi\\Forms\\FormDonHomNay.cs",
+              "ToolTip": "C:\\Users\\Tien Hop\\Desktop\\khanh_phuc\\Quan_Ly_Cua_Hang_Banh_Mi\\BaiTap_WinForms_27_9_2\\QuanLyCuaHangBanhMi\\Forms\\FormDonHomNay.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-21T08:03:08.646Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
