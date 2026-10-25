@@ -3,6 +3,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Data.SqlClient;
+using QuanLyCuaHangBanhMi.Diagnostics;
 
 namespace QuanLyCuaHangBanhMi.Data
 {
@@ -43,6 +44,7 @@ namespace QuanLyCuaHangBanhMi.Data
             }
             catch (Exception ex)
             {
+                ApplicationLogger.Error("Database connection test failed.", ex);
                 error = ex.Message;
                 return false;
             }
@@ -57,10 +59,18 @@ namespace QuanLyCuaHangBanhMi.Data
                 cmd.Parameters.AddRange(parameters);
             }
 
-            using var adapter = new SqlDataAdapter(cmd);
-            var dt = new DataTable();
-            adapter.Fill(dt);
-            return dt;
+            try
+            {
+                using var adapter = new SqlDataAdapter(cmd);
+                var dt = new DataTable();
+                adapter.Fill(dt);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Database query failed.", ex);
+                throw;
+            }
         }
 
         public static int ExecuteNonQuery(string query, SqlParameter[]? parameters = null, CommandType commandType = CommandType.Text)
@@ -75,8 +85,16 @@ namespace QuanLyCuaHangBanhMi.Data
                 cmd.Parameters.AddRange(parameters);
             }
 
-            conn.Open();
-            return cmd.ExecuteNonQuery();
+            try
+            {
+                conn.Open();
+                return cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Database non-query command failed.", ex);
+                throw;
+            }
         }
 
         public static object? ExecuteScalar(string query, SqlParameter[]? parameters = null, CommandType commandType = CommandType.Text)
@@ -91,8 +109,16 @@ namespace QuanLyCuaHangBanhMi.Data
                 cmd.Parameters.AddRange(parameters);
             }
 
-            conn.Open();
-            return cmd.ExecuteScalar();
+            try
+            {
+                conn.Open();
+                return cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Database scalar query failed.", ex);
+                throw;
+            }
         }
 
         // ===== Các overload chạy trong transaction (nhiều lệnh cùng 1 kết nối, commit/rollback chung) =====
@@ -105,10 +131,18 @@ namespace QuanLyCuaHangBanhMi.Data
                 cmd.Parameters.AddRange(parameters);
             }
 
-            using var adapter = new SqlDataAdapter(cmd);
-            var dt = new DataTable();
-            adapter.Fill(dt);
-            return dt;
+            try
+            {
+                using var adapter = new SqlDataAdapter(cmd);
+                var dt = new DataTable();
+                adapter.Fill(dt);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Transactional database query failed.", ex);
+                throw;
+            }
         }
 
         public static int ExecuteNonQuery(SqlConnection conn, SqlTransaction tran, string query, SqlParameter[]? parameters = null)
@@ -118,7 +152,15 @@ namespace QuanLyCuaHangBanhMi.Data
             {
                 cmd.Parameters.AddRange(parameters);
             }
-            return cmd.ExecuteNonQuery();
+            try
+            {
+                return cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Transactional database non-query command failed.", ex);
+                throw;
+            }
         }
 
         public static object? ExecuteScalar(SqlConnection conn, SqlTransaction tran, string query, SqlParameter[]? parameters = null)
@@ -128,7 +170,15 @@ namespace QuanLyCuaHangBanhMi.Data
             {
                 cmd.Parameters.AddRange(parameters);
             }
-            return cmd.ExecuteScalar();
+            try
+            {
+                return cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Transactional database scalar query failed.", ex);
+                throw;
+            }
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 # Bản đồ kiến trúc hệ thống
 
-Cập nhật sau đợt liên kết chức năng và cleanup ngày 22/10/2026.
+Cập nhật sau đợt liên kết chức năng, cleanup và tích hợp chọn lọc Login ngày 23/10/2026.
 
 ## Phạm vi solution
 
@@ -10,6 +10,7 @@ Cập nhật sau đợt liên kết chức năng và cleanup ngày 22/10/2026.
 - CSDL chính: SQL Server LocalDB, database `QuanLyBanhMi`
 - Data access runtime: `Microsoft.Data.SqlClient` và SQL parameterized
 - Solution `../Login/Login.slnx` là project tham khảo độc lập, không phải dependency của ứng dụng chính.
+- Custom controls và assets dùng bởi `FormLogin` nằm cục bộ trong project chính (`Controls/`, `Assets/`); không còn linked compile/content đến thư mục Login.
 
 ## Luồng phụ thuộc
 

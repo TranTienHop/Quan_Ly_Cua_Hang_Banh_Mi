@@ -6,6 +6,7 @@
 |------|----------|
 | `01_TaoBang_Khoa.sql` | Tạo DB `QuanLyBanhMi`, **35 bảng**, PK / FK / UNIQUE / CHECK |
 | `02_DuLieuMau.sql` | Toàn bộ dữ liệu mẫu tháng 9/2026, chạy trong **1 transaction** (lỗi ở đâu cũng rollback hết) |
+| `03_Migration_TichHop_Login.sql` | Draft cộng thêm cột lockout và bảng lịch phân ca; cần duyệt trước khi chạy |
 | `gen_banhang.py` | Công cụ (không phải file chạy DB): sinh lại mục 26–30 trong `02_DuLieuMau.sql` |
 
 Thứ tự chạy: `01_TaoBang_Khoa.sql` → `02_DuLieuMau.sql`.
@@ -40,6 +41,12 @@ sqlcmd -S "(localdb)\MSSQLLocalDB" -f 65001 -i "02_DuLieuMau.sql"
 Sinh lại phần bán hàng (cần Python 3): `python gen_banhang.py`
 
 Hoặc đổi `-S` thành tên instance Express của bạn.
+
+`03_Migration_TichHop_Login.sql` đã được áp dụng lên `(localdb)\MSSQLLocalDB` / `QuanLyBanhMi`
+ngày 23/10/2026 sau khi người dùng xác nhận đã sao lưu. Script không được gọi tự động bởi ứng
+dụng; nó bổ sung các cột đếm đăng nhập sai/thời điểm khóa và lịch phân ca riêng, bên cạnh
+`NhatKy_CaLam` hiện có. Trước khi áp dụng lên môi trường khác hoặc chạy lại thủ công, hãy kiểm
+tra đúng database và tạo backup có thể khôi phục. Script dùng transaction và không xóa dữ liệu.
 
 **An toàn dữ liệu:** `01_TaoBang_Khoa.sql` chỉ tạo database khi database chưa tồn tại. Nếu `QuanLyBanhMi` đã có, script sẽ dừng và giữ nguyên dữ liệu; không xóa hay tạo lại database. Không chạy `02_DuLieuMau.sql` nhiều lần trên cùng database vì đây là script seed ban đầu, không phải cập nhật dữ liệu.
 

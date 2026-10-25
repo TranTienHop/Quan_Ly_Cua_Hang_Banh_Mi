@@ -16,7 +16,19 @@ namespace QuanLyCuaHangBanhMi
         {
             ApplicationConfiguration.Initialize();
 
-            DatabaseHelper.ConfigureConnectionString(DatabaseConfiguration.LoadConnectionString());
+            try
+            {
+                DatabaseHelper.ConfigureConnectionString(DatabaseConfiguration.LoadConnectionString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không thể đọc cấu hình kết nối cơ sở dữ liệu.\n\nChi tiết: " + ex.Message,
+                    "Lỗi cấu hình",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
             var services = ApplicationServices.CreateDefault();
 
             // Đăng nhập → FormMain. BÁN HÀNG mở FormOrder. Đăng xuất → login.

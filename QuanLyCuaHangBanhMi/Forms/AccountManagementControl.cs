@@ -2,6 +2,8 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using QuanLyCuaHangBanhMi.Controls;
+using QuanLyCuaHangBanhMi.Forms.Administration;
 using QuanLyCuaHangBanhMi.Models;
 using QuanLyCuaHangBanhMi.Services;
 
@@ -9,38 +11,44 @@ namespace QuanLyCuaHangBanhMi.Forms
 {
     public partial class AccountManagementControl : UserControl
     {
-        private readonly System.Windows.Forms.Timer _searchTimer = new() { Interval = 300 };
+        private readonly UserManagementView _view;
+        private readonly System.Windows.Forms.Timer _searchTimer;
 
         public AccountManagementControl()
         {
             InitializeComponent();
-            cboStatus.Items.AddRange(new object[] { "Tất cả trạng thái", "Đang hoạt động", "Đã khóa" });
-            cboStatus.SelectedIndex = 0;
-
+            Controls.Remove(rootLayout);
+            rootLayout.Dispose();
+            _view = new UserManagementView { Dock = DockStyle.Fill };
+            Controls.Add(_view);
+            _searchTimer = new System.Windows.Forms.Timer(components) { Interval = 300 };
             _searchTimer.Tick += (_, _) => { _searchTimer.Stop(); LoadData(); };
-            txtSearch.TextChanged += (_, _) => { _searchTimer.Stop(); _searchTimer.Start(); };
-            cboStatus.SelectedIndexChanged += (_, _) => LoadData();
-            btnReload.Click += (_, _) => LoadData();
-            btnAdd.Click += (_, _) => CreateAccount();
-            btnResetPassword.Click += (_, _) => ResetSelectedPassword();
-            btnToggleStatus.Click += (_, _) => ToggleSelectedStatus();
-            dgvAccounts.CellDoubleClick += (_, e) => { if (e.RowIndex >= 0) ResetSelectedPassword(); };
+            _view.SearchBox.TextChanged += (_, _) => { _searchTimer.Stop(); _searchTimer.Start(); };
+            _view.StatusFilter.SelectedIndexChanged += (_, _) => LoadData();
+            _view.AddButton.Click += (_, _) => CreateAccount();
+            _view.EditButton.Click += (_, _) => ResetSelectedPassword();
+            _view.LockButton.Click += (_, _) => ToggleSelectedStatus();
+            _view.UsersGrid.RowEditClicked += (_, _) => ResetSelectedPassword();
+            _view.UsersGrid.RowDeleteClicked += (_, _) => ToggleSelectedStatus();
+            _view.UsersGrid.CellDoubleClick += (_, e) => { if (e.RowIndex >= 0) ResetSelectedPassword(); };
         }
 
         public void LoadData()
         {
-            if (DesignMode) return;
+            if (DesignTimeHelper.IsDesignTime(this)) return;
             try
             {
-                bool? active = cboStatus.SelectedIndex switch { 1 => true, 2 => false, _ => null };
-                DataTable accounts = AccountService.GetAll(txtSearch.Text.Trim(), active);
-                dgvAccounts.DataSource = accounts;
-                HideColumn("MaTaiKhoan");
-                HideColumn("MaNhanVien");
-                HideColumn("MaVaiTro");
-                HideColumn("MaChiNhanh");
-                FormatColumns();
-                lblRecordCount.Text = $"{accounts.Rows.Count:N0} tài khoản";
+                bool? active = _view.StatusFilter.SelectedIndex switch { 1 => true, 2 => false, _ => null };
+                string search = _view.SearchBox.Text.Trim();
+                if (string.Equals(search, _view.SearchBox.Tag as string, StringComparison.Ordinal))
+                    search = string.Empty;
+
+                DataTable accounts = AccountService.GetAll(search, active);
+                DataTable display = CreateDisplayTable(accounts);
+                _view.UsersGrid.DataSource = display;
+                if (_view.UsersGrid.Columns["Ngày_tạo"] is DataGridViewColumn lastLogin)
+                    lastLogin.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                _view.SetRecordCount(display.Rows.Count);
             }
             catch (Exception ex)
             {
@@ -143,45 +151,52 @@ namespace QuanLyCuaHangBanhMi.Forms
             accountId = 0;
             username = string.Empty;
             isActive = false;
-            if (dgvAccounts.CurrentRow?.DataBoundItem is not DataRowView row)
+            if (_view.UsersGrid.CurrentRow?.DataBoundItem is not DataRowView row)
             {
                 MessageBox.Show("Vui lòng chọn một tài khoản trong danh sách.", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
 
-            accountId = Convert.ToInt32(row["MaTaiKhoan"]);
-            username = Convert.ToString(row["TenDangNhap"]) ?? string.Empty;
-            isActive = Convert.ToBoolean(row["DangHoatDong"]);
+            accountId = Convert.ToInt32(row["UserID"]);
+            username = Convert.ToString(row["Tên_đăng_nhập"]) ?? string.Empty;
+            isActive = string.Equals(Convert.ToString(row["Trạng_thái"]), "Đang hoạt động",
+                StringComparison.Ordinal);
             return true;
         }
 
-        private void HideColumn(string name)
+        private static DataTable CreateDisplayTable(DataTable accounts)
         {
-            DataGridViewColumn? column = dgvAccounts.Columns[name];
-            if (column != null) column.Visible = false;
-        }
+            var display = new DataTable();
+            display.Columns.Add("STT", typeof(int));
+            display.Columns.Add("UserID", typeof(int));
+            display.Columns.Add("Tên_đăng_nhập", typeof(string));
+            display.Columns.Add("Nhân_viên", typeof(string));
+            display.Columns.Add("Vai_trò", typeof(string));
+            display.Columns.Add("Chi_nhánh", typeof(string));
+            display.Columns.Add("Trạng_thái", typeof(string));
+            display.Columns.Add("Ngày_tạo", typeof(object));
+            display.Columns.Add("Thao_tác", typeof(string));
 
-        private void FormatColumns()
-        {
-            dgvAccounts.EnableHeadersVisualStyles = false;
-            dgvAccounts.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(44, 62, 80);
-            dgvAccounts.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvAccounts.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            dgvAccounts.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 249, 250);
-            SetHeader("TenDangNhap", "Tên đăng nhập");
-            SetHeader("MaCodeNhanVien", "Mã NV");
-            SetHeader("HoTen", "Nhân viên");
-            SetHeader("TenVaiTro", "Vai trò");
-            SetHeader("TenChiNhanh", "Chi nhánh");
-            SetHeader("DangHoatDong", "Hoạt động");
-            SetHeader("LanDangNhapCuoi", "Đăng nhập cuối");
-        }
+            int order = 1;
+            foreach (DataRow account in accounts.Rows)
+            {
+                DataRow row = display.NewRow();
+                row["STT"] = order++;
+                row["UserID"] = account["MaTaiKhoan"];
+                row["Tên_đăng_nhập"] = account["TenDangNhap"];
+                row["Nhân_viên"] = $"{account["MaCodeNhanVien"]} · {account["HoTen"]}";
+                row["Vai_trò"] = account["TenVaiTro"];
+                row["Chi_nhánh"] = account["TenChiNhanh"];
+                row["Trạng_thái"] = Convert.ToBoolean(account["DangHoatDong"])
+                    ? "Đang hoạt động"
+                    : "Đã khóa";
+                row["Ngày_tạo"] = account["LanDangNhapCuoi"];
+                row["Thao_tác"] = string.Empty;
+                display.Rows.Add(row);
+            }
 
-        private void SetHeader(string columnName, string header)
-        {
-            DataGridViewColumn? column = dgvAccounts.Columns[columnName];
-            if (column != null) column.HeaderText = header;
+            return display;
         }
 
         private static Form CreateAccountDialog(DataTable employees, DataTable roles,

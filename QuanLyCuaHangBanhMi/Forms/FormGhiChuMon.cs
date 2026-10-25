@@ -66,5 +66,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             txtNote.SelectionStart = txtNote.TextLength;
             txtNote.Focus();
         }
+
+        private void lblTitle_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

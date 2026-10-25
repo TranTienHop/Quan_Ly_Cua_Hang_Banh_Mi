@@ -129,7 +129,11 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void EditSelectedRole()
         {
-            if (!TryGetSelectedRole(out int roleId, out string code, out string name, out string description)) return;
+            if (!TryGetSelectedRole(out int roleId, out string code, out string name, out string description))
+            {
+                ShowRoleSelectionRequired();
+                return;
+            }
             IReadOnlyList<int> assigned;
             try
             {
@@ -166,7 +170,11 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void SaveSelectedPermissions()
         {
-            if (!TryGetSelectedRole(out int roleId, out _, out string name, out string description)) return;
+            if (!TryGetSelectedRole(out int roleId, out _, out string name, out string description))
+            {
+                ShowRoleSelectionRequired();
+                return;
+            }
             try
             {
                 RoleService.Update(new RoleUpdateModel
@@ -192,17 +200,19 @@ namespace QuanLyCuaHangBanhMi.Forms
             roleId = 0;
             code = name = description = string.Empty;
             if (dgvRoles.CurrentRow?.DataBoundItem is not DataRowView row)
-            {
-                MessageBox.Show("Vui lòng chọn một vai trò.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
-            }
 
             roleId = Convert.ToInt32(row["MaVaiTro"]);
             code = Convert.ToString(row["MaCode"]) ?? string.Empty;
             name = Convert.ToString(row["TenVaiTro"]) ?? string.Empty;
             description = Convert.ToString(row["MoTa"]) ?? string.Empty;
             return true;
+        }
+
+        private void ShowRoleSelectionRequired()
+        {
+            lblSelectedRole.Text = "Vui lòng chọn một vai trò.";
+            dgvRoles.Focus();
         }
 
         private int? GetSelectedRoleId() =>

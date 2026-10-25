@@ -17,123 +17,127 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         private void InitializeComponent()
         {
-            this.pnlBody = new System.Windows.Forms.Panel();
-            this.flpQuick = new System.Windows.Forms.FlowLayoutPanel();
-            this.txtNote = new System.Windows.Forms.TextBox();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.pnlButtons = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOk = new System.Windows.Forms.Button();
-            this.pnlBody.SuspendLayout();
-            this.pnlButtons.SuspendLayout();
-            this.SuspendLayout();
+            pnlBody = new Panel();
+            flpQuick = new FlowLayoutPanel();
+            txtNote = new TextBox();
+            lblTitle = new Label();
+            pnlButtons = new FlowLayoutPanel();
+            btnCancel = new Button();
+            btnOk = new Button();
+            pnlBody.SuspendLayout();
+            pnlButtons.SuspendLayout();
+            SuspendLayout();
             // 
             // pnlBody
             // 
-            this.pnlBody.Controls.Add(this.flpQuick);
-            this.pnlBody.Controls.Add(this.txtNote);
-            this.pnlBody.Controls.Add(this.lblTitle);
-            this.pnlBody.Controls.Add(this.pnlButtons);
-            this.pnlBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBody.Location = new System.Drawing.Point(0, 0);
-            this.pnlBody.Name = "pnlBody";
-            this.pnlBody.Padding = new System.Windows.Forms.Padding(14, 8, 14, 10);
-            this.pnlBody.Size = new System.Drawing.Size(460, 270);
-            this.pnlBody.TabIndex = 0;
+            pnlBody.Controls.Add(flpQuick);
+            pnlBody.Controls.Add(txtNote);
+            pnlBody.Controls.Add(lblTitle);
+            pnlBody.Controls.Add(pnlButtons);
+            pnlBody.Dock = DockStyle.Fill;
+            pnlBody.Location = new Point(0, 0);
+            pnlBody.Name = "pnlBody";
+            pnlBody.Padding = new Padding(14, 8, 14, 10);
+            pnlBody.Size = new Size(460, 270);
+            pnlBody.TabIndex = 0;
             // 
             // flpQuick
             // 
-            this.flpQuick.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpQuick.Location = new System.Drawing.Point(14, 69);
-            this.flpQuick.Name = "flpQuick";
-            this.flpQuick.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            this.flpQuick.Size = new System.Drawing.Size(432, 145);
-            this.flpQuick.TabIndex = 1;
+            flpQuick.Dock = DockStyle.Fill;
+            flpQuick.Location = new Point(14, 71);
+            flpQuick.Name = "flpQuick";
+            flpQuick.Padding = new Padding(0, 8, 0, 0);
+            flpQuick.Size = new Size(432, 143);
+            flpQuick.TabIndex = 1;
             // 
             // txtNote
             // 
-            this.txtNote.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtNote.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtNote.Location = new System.Drawing.Point(14, 44);
-            this.txtNote.MaxLength = 255;
-            this.txtNote.Name = "txtNote";
-            this.txtNote.PlaceholderText = "Nhập ghi chú hoặc bấm chọn nhanh bên dưới";
-            this.txtNote.Size = new System.Drawing.Size(432, 27);
-            this.txtNote.TabIndex = 0;
+            txtNote.Dock = DockStyle.Top;
+            txtNote.Font = new Font("Segoe UI", 11F);
+            txtNote.Location = new Point(14, 44);
+            txtNote.MaxLength = 255;
+            txtNote.Name = "txtNote";
+            txtNote.PlaceholderText = "Nhập ghi chú hoặc bấm chọn nhanh bên dưới";
+            txtNote.Size = new Size(432, 27);
+            txtNote.TabIndex = 0;
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoEllipsis = true;
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(44, 62, 80);
-            this.lblTitle.Location = new System.Drawing.Point(14, 8);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(432, 36);
-            this.lblTitle.Text = "📝 Tên món";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTitle.UseMnemonic = false;
+            lblTitle.AutoEllipsis = true;
+            lblTitle.Dock = DockStyle.Top;
+            lblTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(44, 62, 80);
+            lblTitle.Location = new Point(14, 8);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(432, 36);
+            lblTitle.TabIndex = 2;
+            lblTitle.Text = "📝 Tên món";
+            lblTitle.TextAlign = ContentAlignment.MiddleLeft;
+            lblTitle.UseMnemonic = false;
+            lblTitle.Click += lblTitle_Click;
             // 
             // pnlButtons
             // 
-            this.pnlButtons.Controls.Add(this.btnCancel);
-            this.pnlButtons.Controls.Add(this.btnOk);
-            this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlButtons.Location = new System.Drawing.Point(14, 214);
-            this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.pnlButtons.Size = new System.Drawing.Size(432, 46);
-            this.pnlButtons.TabIndex = 2;
+            pnlButtons.Controls.Add(btnCancel);
+            pnlButtons.Controls.Add(btnOk);
+            pnlButtons.Dock = DockStyle.Bottom;
+            pnlButtons.FlowDirection = FlowDirection.RightToLeft;
+            pnlButtons.Location = new Point(14, 214);
+            pnlButtons.Name = "pnlButtons";
+            pnlButtons.Padding = new Padding(0, 6, 0, 0);
+            pnlButtons.Size = new Size(432, 46);
+            pnlButtons.TabIndex = 2;
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(90, 34);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Hủy";
-            this.btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.BackColor = Color.FromArgb(236, 240, 241);
+            btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Location = new Point(339, 9);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(90, 34);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Hủy";
+            btnCancel.UseVisualStyleBackColor = false;
             // 
             // btnOk
             // 
-            this.btnOk.BackColor = System.Drawing.Color.FromArgb(242, 153, 0);
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.FlatAppearance.BorderSize = 0;
-            this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOk.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnOk.ForeColor = System.Drawing.Color.White;
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(130, 34);
-            this.btnOk.TabIndex = 0;
-            this.btnOk.Text = "✔ Lưu ghi chú";
-            this.btnOk.UseVisualStyleBackColor = false;
+            btnOk.BackColor = Color.FromArgb(242, 153, 0);
+            btnOk.DialogResult = DialogResult.OK;
+            btnOk.FlatAppearance.BorderSize = 0;
+            btnOk.FlatStyle = FlatStyle.Flat;
+            btnOk.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnOk.ForeColor = Color.White;
+            btnOk.Location = new Point(203, 9);
+            btnOk.Name = "btnOk";
+            btnOk.Size = new Size(130, 34);
+            btnOk.TabIndex = 0;
+            btnOk.Text = "✔ Lưu ghi chú";
+            btnOk.UseVisualStyleBackColor = false;
             // 
             // FormGhiChuMon
             // 
-            this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.White;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(460, 270);
-            this.Controls.Add(this.pnlBody);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "FormGhiChuMon";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Ghi chú món";
-            this.Shown += new System.EventHandler(this.FormGhiChuMon_Shown);
-            this.pnlBody.ResumeLayout(false);
-            this.pnlBody.PerformLayout();
-            this.pnlButtons.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AcceptButton = btnOk;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            BackColor = Color.White;
+            CancelButton = btnCancel;
+            ClientSize = new Size(460, 270);
+            Controls.Add(pnlBody);
+            Font = new Font("Segoe UI", 10F);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FormGhiChuMon";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Ghi chú món";
+            Shown += FormGhiChuMon_Shown;
+            pnlBody.ResumeLayout(false);
+            pnlBody.PerformLayout();
+            pnlButtons.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion

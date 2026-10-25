@@ -45,17 +45,10 @@ namespace QuanLyCuaHangBanhMi.Services
 
         public List<(string TenNguyenLieu, decimal SoLuong)> GetRecipe(int maSanPham)
         {
-            try
-            {
-                var dt = OrderRepository.GetRecipe(maSanPham);
-                return dt.AsEnumerable()
-                    .Select(r => (r.Field<string>("TenNguyenLieu") ?? "", r.Field<decimal>("SoLuongTrenMotPhan")))
-                    .ToList();
-            }
-            catch
-            {
-                return new List<(string, decimal)>();
-            }
+            var dt = OrderRepository.GetRecipe(maSanPham);
+            return dt.AsEnumerable()
+                .Select(r => (r.Field<string>("TenNguyenLieu") ?? "", r.Field<decimal>("SoLuongTrenMotPhan")))
+                .ToList();
         }
 
         public DataTable FindCustomerByPhone(string phone)

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using QuanLyCuaHangBanhMi.Diagnostics;
 
 namespace QuanLyCuaHangBanhMi.Data
 {
@@ -12,6 +13,7 @@ namespace QuanLyCuaHangBanhMi.Data
             if (!string.IsNullOrWhiteSpace(environmentConnection))
                 return environmentConnection;
 
+            Exception? configurationError = null;
             foreach (string directory in GetConfigurationDirectories())
             {
                 string path = Path.Combine(directory, "appsettings.json");
@@ -29,13 +31,22 @@ namespace QuanLyCuaHangBanhMi.Data
                         return value.GetString()!;
                     }
                 }
-                catch (JsonException)
+                catch (JsonException ex)
                 {
+                    configurationError = ex;
+                    ApplicationLogger.Error($"Invalid JSON database configuration at '{path}'.", ex);
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
+                    configurationError = ex;
+                    ApplicationLogger.Error($"Could not read database configuration at '{path}'.", ex);
                 }
             }
+
+            if (configurationError is not null)
+                throw new InvalidOperationException(
+                    "Không thể đọc cấu hình kết nối cơ sở dữ liệu từ appsettings.json.",
+                    configurationError);
 
             return DatabaseHelper.DefaultConnectionString;
         }

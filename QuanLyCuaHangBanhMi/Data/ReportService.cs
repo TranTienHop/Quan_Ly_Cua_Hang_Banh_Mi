@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using QuanLyCuaHangBanhMi.Diagnostics;
+using QuanLyCuaHangBanhMi.Models;
 
 namespace QuanLyCuaHangBanhMi.Data
 {
@@ -47,20 +49,34 @@ namespace QuanLyCuaHangBanhMi.Data
 
             // Thêm mục "Tất cả chi nhánh"
             dt.Rows.Add(0, "-- Tất cả chi nhánh --");
+            if (!UserSession.IsAdmin)
+                dt.Rows.Clear();
 
             try
             {
                 if (IsQuanLyBanhMi())
                 {
-                    string sql = "SELECT MaChiNhanh, TenChiNhanh FROM dbo.ChiNhanh ORDER BY MaChiNhanh";
-                    DataTable dbBranches = DatabaseHelper.ExecuteQuery(sql);
+                    const string sql = @"
+                        SELECT MaChiNhanh, TenChiNhanh
+                        FROM dbo.ChiNhanh
+                        WHERE @IsAdmin = 1 OR MaChiNhanh = @SessionBranchId
+                        ORDER BY MaChiNhanh";
+                    DataTable dbBranches = DatabaseHelper.ExecuteQuery(sql, new[]
+                    {
+                        DatabaseHelper.Param("@IsAdmin", SqlDbType.Bit, UserSession.IsAdmin),
+                        DatabaseHelper.Param("@SessionBranchId", SqlDbType.Int, UserSession.MaChiNhanh)
+                    });
                     foreach (DataRow r in dbBranches.Rows)
                     {
                         dt.Rows.Add(Convert.ToInt32(r["MaChiNhanh"]), r["TenChiNhanh"].ToString());
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Loading report branch choices failed.", ex);
+                throw;
+            }
             return dt;
         }
 
@@ -84,7 +100,11 @@ namespace QuanLyCuaHangBanhMi.Data
                     dt.Rows.Add(Convert.ToInt32(r["MaDanhMuc"]), r["TenDanhMuc"].ToString());
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Loading report category choices failed.", ex);
+                throw;
+            }
             return dt;
         }
 
@@ -97,6 +117,7 @@ namespace QuanLyCuaHangBanhMi.Data
         /// </summary>
         public static DataTable GetRevenueReport(DateTime fromDate, DateTime toDate, int branchId, bool detailed)
         {
+            branchId = ResolveAccessibleBranch(branchId);
             var prms = new List<SqlParameter>
             {
                 new SqlParameter("@FromDate", fromDate.Date),
@@ -194,6 +215,7 @@ namespace QuanLyCuaHangBanhMi.Data
 
         public static RevenueSummary GetRevenueSummary(DateTime fromDate, DateTime toDate, int branchId)
         {
+            branchId = ResolveAccessibleBranch(branchId);
             var summary = new RevenueSummary();
             var prms = new List<SqlParameter>
             {
@@ -256,7 +278,11 @@ namespace QuanLyCuaHangBanhMi.Data
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Loading revenue summary failed.", ex);
+                throw;
+            }
 
             return summary;
         }
@@ -267,6 +293,7 @@ namespace QuanLyCuaHangBanhMi.Data
 
         public static DataTable GetBestSellerReport(DateTime fromDate, DateTime toDate, int branchId, int categoryId, int topN, bool sortByRevenue)
         {
+            branchId = ResolveAccessibleBranch(branchId);
             var prms = new List<SqlParameter>
             {
                 new SqlParameter("@FromDate", fromDate.Date),
@@ -382,6 +409,7 @@ namespace QuanLyCuaHangBanhMi.Data
 
         public static DataTable GetInventoryConsumptionReport(int branchId, bool onlyLowStock, string searchKeyword, DateTime fromDate, DateTime toDate)
         {
+            branchId = ResolveAccessibleBranch(branchId);
             var prms = new List<SqlParameter>
             {
                 new SqlParameter("@FromDate", fromDate.Date),
@@ -490,6 +518,7 @@ namespace QuanLyCuaHangBanhMi.Data
         /// </summary>
         public static List<ChartPoint> GetDailyRevenueChartData(DateTime fromDate, DateTime toDate, int branchId)
         {
+            branchId = ResolveAccessibleBranch(branchId);
             var list = new List<ChartPoint>();
             var prms = new List<SqlParameter>
             {
@@ -534,7 +563,11 @@ namespace QuanLyCuaHangBanhMi.Data
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Loading daily revenue chart data failed.", ex);
+                throw;
+            }
 
             return list;
         }
@@ -544,6 +577,7 @@ namespace QuanLyCuaHangBanhMi.Data
         /// </summary>
         public static List<ChartPoint> GetCategoryRevenueChartData(DateTime fromDate, DateTime toDate, int branchId)
         {
+            branchId = ResolveAccessibleBranch(branchId);
             var list = new List<ChartPoint>();
             var prms = new List<SqlParameter>
             {
@@ -605,7 +639,11 @@ namespace QuanLyCuaHangBanhMi.Data
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Loading category revenue chart data failed.", ex);
+                throw;
+            }
 
             return list;
         }
@@ -621,12 +659,19 @@ namespace QuanLyCuaHangBanhMi.Data
                 new SqlParameter("@FromDate", fromDate.Date),
                 new SqlParameter("@ToDate", toDate.Date.AddDays(1).AddTicks(-1))
             };
+            string branchFilter = string.Empty;
+            if (!UserSession.IsAdmin)
+            {
+                int branchId = ResolveAccessibleBranch(0);
+                branchFilter = " AND hd.MaChiNhanh = @MaChiNhanh";
+                prms.Add(DatabaseHelper.Param("@MaChiNhanh", SqlDbType.Int, branchId));
+            }
 
             try
             {
                 if (IsQuanLyBanhMi())
                 {
-                    string sql = @"
+                    string sql = $@"
                         SELECT 
                             cn.TenChiNhanh,
                             SUM(hd.TongThanhToan) AS DoanhThu
@@ -634,6 +679,7 @@ namespace QuanLyCuaHangBanhMi.Data
                         JOIN dbo.ChiNhanh cn ON hd.MaChiNhanh = cn.MaChiNhanh
                         WHERE hd.TrangThaiThanhToan = 'DaTT'
                           AND hd.NgayTao >= @FromDate AND hd.NgayTao <= @ToDate
+                          {branchFilter}
                         GROUP BY cn.TenChiNhanh
                         ORDER BY DoanhThu DESC";
 
@@ -660,7 +706,11 @@ namespace QuanLyCuaHangBanhMi.Data
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ApplicationLogger.Error("Loading branch revenue chart data failed.", ex);
+                throw;
+            }
 
             return list;
         }
@@ -702,6 +752,19 @@ namespace QuanLyCuaHangBanhMi.Data
             }
 
             return list;
+        }
+
+        private static int ResolveAccessibleBranch(int requestedBranchId)
+        {
+            if (UserSession.IsAdmin)
+                return requestedBranchId > 0 ? requestedBranchId : 0;
+
+            if (UserSession.MaChiNhanh <= 0)
+                throw new UnauthorizedAccessException("Phiên đăng nhập chưa có chi nhánh hợp lệ.");
+            if (requestedBranchId > 0 && requestedBranchId != UserSession.MaChiNhanh)
+                throw new UnauthorizedAccessException("Bạn chỉ được xem báo cáo của chi nhánh hiện tại.");
+
+            return UserSession.MaChiNhanh;
         }
 
         #endregion

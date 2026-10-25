@@ -8,10 +8,12 @@ namespace QuanLyCuaHangBanhMi.Forms
         private System.Windows.Forms.TabPage tabRoles = null!;
         private System.Windows.Forms.TabPage tabBranches = null!;
         private System.Windows.Forms.TabPage tabShifts = null!;
+        private System.Windows.Forms.TabPage tabShiftSchedule = null!;
         private AccountManagementControl accountManagement = null!;
         private RoleManagementControl roleManagement = null!;
         private BranchManagementControl branchManagement = null!;
         private ShiftManagementControl shiftManagement = null!;
+        private EmployeeShiftScheduleControl shiftSchedule = null!;
 
         protected override void Dispose(bool disposing)
         {
@@ -28,10 +30,12 @@ namespace QuanLyCuaHangBanhMi.Forms
             this.tabRoles = new System.Windows.Forms.TabPage();
             this.tabBranches = new System.Windows.Forms.TabPage();
             this.tabShifts = new System.Windows.Forms.TabPage();
+            this.tabShiftSchedule = new System.Windows.Forms.TabPage();
             this.accountManagement = new AccountManagementControl();
             this.roleManagement = new RoleManagementControl();
             this.branchManagement = new BranchManagementControl();
             this.shiftManagement = new ShiftManagementControl();
+            this.shiftSchedule = new EmployeeShiftScheduleControl();
             this.tabAdministration.SuspendLayout();
             this.tabAccounts.SuspendLayout();
             this.tabRoles.SuspendLayout();
@@ -43,6 +47,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             this.tabAdministration.Controls.Add(this.tabRoles);
             this.tabAdministration.Controls.Add(this.tabBranches);
             this.tabAdministration.Controls.Add(this.tabShifts);
+            this.tabAdministration.Controls.Add(this.tabShiftSchedule);
             this.tabAdministration.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabAdministration.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.tabAdministration.ItemSize = new System.Drawing.Size(150, 38);
@@ -84,6 +89,14 @@ namespace QuanLyCuaHangBanhMi.Forms
             this.tabShifts.Size = new System.Drawing.Size(1172, 604);
             this.tabShifts.Text = "Ca làm";
 
+            this.tabShiftSchedule.BackColor = System.Drawing.Color.FromArgb(245, 246, 250);
+            this.tabShiftSchedule.Controls.Add(this.shiftSchedule);
+            this.tabShiftSchedule.Location = new System.Drawing.Point(4, 42);
+            this.tabShiftSchedule.Name = "tabShiftSchedule";
+            this.tabShiftSchedule.Padding = new System.Windows.Forms.Padding(3);
+            this.tabShiftSchedule.Size = new System.Drawing.Size(1172, 604);
+            this.tabShiftSchedule.Text = "Lịch phân ca";
+
             this.accountManagement.Dock = System.Windows.Forms.DockStyle.Fill;
             this.accountManagement.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.accountManagement.Location = new System.Drawing.Point(3, 3);
@@ -108,6 +121,12 @@ namespace QuanLyCuaHangBanhMi.Forms
             this.shiftManagement.Name = "shiftManagement";
             this.shiftManagement.Size = new System.Drawing.Size(1166, 598);
 
+            this.shiftSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.shiftSchedule.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.shiftSchedule.Location = new System.Drawing.Point(3, 3);
+            this.shiftSchedule.Name = "shiftSchedule";
+            this.shiftSchedule.Size = new System.Drawing.Size(1166, 598);
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(245, 246, 250);
@@ -119,6 +138,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             this.tabRoles.ResumeLayout(false);
             this.tabBranches.ResumeLayout(false);
             this.tabShifts.ResumeLayout(false);
+            this.tabShiftSchedule.ResumeLayout(false);
             this.ResumeLayout(false);
         }
     }

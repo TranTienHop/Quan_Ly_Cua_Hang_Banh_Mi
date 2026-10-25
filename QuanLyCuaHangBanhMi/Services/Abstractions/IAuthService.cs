@@ -6,7 +6,8 @@ namespace QuanLyCuaHangBanhMi.Services.Abstractions
     {
         Success,
         InvalidCredentials,
-        Locked
+        Locked,
+        TemporarilyLocked
     }
 
     public interface IAuthService

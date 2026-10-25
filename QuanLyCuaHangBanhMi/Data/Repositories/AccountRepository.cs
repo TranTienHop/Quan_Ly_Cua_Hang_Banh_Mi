@@ -138,7 +138,18 @@ namespace QuanLyCuaHangBanhMi.Data.Repositories
             return DatabaseHelper.ExecuteNonQuery(@"
                 UPDATE dbo.TaiKhoan
                 SET MatKhauBam = @PasswordHash
-                WHERE MaTaiKhoan = @AccountId",
+                WHERE MaTaiKhoan = @AccountId;
+
+                IF COL_LENGTH(N'dbo.TaiKhoan', N'SoLanDangNhapThatBai') IS NOT NULL
+                   AND COL_LENGTH(N'dbo.TaiKhoan', N'KhoaDen') IS NOT NULL
+                BEGIN
+                    EXEC sys.sp_executesql
+                        N'UPDATE dbo.TaiKhoan
+                          SET SoLanDangNhapThatBai = 0, KhoaDen = NULL
+                          WHERE MaTaiKhoan = @Id',
+                        N'@Id INT',
+                        @Id = @AccountId;
+                END",
                 new[]
                 {
                     DatabaseHelper.Param("@AccountId", SqlDbType.Int, accountId),

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using QuanLyCuaHangBanhMi.Data;
+using QuanLyCuaHangBanhMi.Diagnostics;
 using QuanLyCuaHangBanhMi.Models;
 using QuanLyCuaHangBanhMi.Services;
 
@@ -30,17 +31,12 @@ namespace QuanLyCuaHangBanhMi.Forms
         {
             lblUserInfo.Text = $"Xin chào: {UserSession.FullName} ({UserSession.RoleName})";
 
+            // InitializeComponent() đã dựng toàn bộ nội dung tab. Không khởi tạo lại ở đây:
+            // lần khởi tạo thứ hai tạo các grid nằm phía sau grid đang hiển thị, khiến
+            // DataSource được gán đúng nhưng người dùng vẫn chỉ nhìn thấy grid rỗng.
             ApplyNavigationPermissions();
             ApplyInventoryPermissions();
             ApplyReportPermissions();
-
-            LoadDashboardTab();
-            if (CanAccessTab(1)) LoadProductsTab();
-            if (CanAccessTab(2)) LoadCustomersTab();
-            if (CanAccessTab(3)) LoadPromosTab();
-            if (CanAccessTab(4)) LoadIngredientsTab();
-            if (CanAccessTab(5)) LoadReportsTab();
-            if (CanAccessTab(6)) LoadEmployeesTab();
 
             // Sau đăng nhập luôn vào Dashboard; chỉ nhảy tab khác khi được yêu cầu rõ ràng
             NavigateToTab(_startTab);
@@ -91,11 +87,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             };
             int tab = Math.Clamp(tabIndex, 0, navButtons.Length - 1);
             if (!CanAccessTab(tab)) tab = 0;
-            if (!navButtons[tab].Visible) tab = 0;
             SwitchTab(tab, navButtons[tab]);
+            LoadTabData(tab);
             if (tab == 0)
             {
-                LoadDashboardTab();
                 EnsureDashboardSidebarOpen();
             }
             else
@@ -103,6 +98,24 @@ namespace QuanLyCuaHangBanhMi.Forms
                 // Module khác: đóng sidebar (mở lại bằng ☰)
                 panelSidebar.Visible = false;
                 PerformLayout();
+            }
+        }
+
+        /// <summary>
+        /// Tải dữ liệu đúng thời điểm người dùng mở chức năng. Không phụ thuộc vào lần tải
+        /// ban đầu của Form, đồng thời tránh truy vấn tất cả module khi chúng chưa được dùng.
+        /// </summary>
+        private void LoadTabData(int tabIndex)
+        {
+            switch (tabIndex)
+            {
+                case 0: LoadDashboardTab(); break;
+                case 1: LoadProductsTab(); break;
+                case 2: LoadCustomersTab(); break;
+                case 3: LoadPromosTab(); break;
+                case 4: LoadIngredientsTab(); break;
+                case 5: LoadReportsTab(); break;
+                case 6: LoadEmployeesTab(); break;
             }
         }
 
@@ -137,14 +150,6 @@ namespace QuanLyCuaHangBanhMi.Forms
                 NavigateToTab(tab);
             else
                 NavigateToTab(0);
-
-            LoadDashboardTab();
-            if (CanAccessTab(1)) LoadProductsTab();
-            if (CanAccessTab(2)) LoadCustomersTab();
-            if (CanAccessTab(3)) LoadPromosTab();
-            if (CanAccessTab(4)) LoadIngredientsTab();
-            if (CanAccessTab(5)) LoadReportsTab();
-            if (CanAccessTab(6)) LoadEmployeesTab();
         }
 
         private void ApplyNavigationPermissions()
@@ -533,7 +538,11 @@ namespace QuanLyCuaHangBanhMi.Forms
                         lowStock = inv.Rows.Count;
                     }
                 }
-                catch { /* bỏ qua nếu chưa có dữ liệu kho */ }
+                catch (Exception ex)
+                {
+                    ApplicationLogger.Error("Loading dashboard low-stock count failed.", ex);
+                    throw;
+                }
                 lblDashLowStock.Text = lowStock.ToString("N0", _vnCulture);
 
                 DataTable top = UserSession.HasPermission(PermissionCodes.ReportTopProduct)
@@ -601,14 +610,16 @@ namespace QuanLyCuaHangBanhMi.Forms
         private ComboBox cboCustTier = null!;
         private NumericUpDown numCustPoints = null!;
         private CheckBox chkCustActive = null!;
+        private Label lblCustDataStatus = null!;
         private int _selectedCustomerId = 0;
 
         private void InitializeCustomersTab()
         {
             tabCustomers.BackColor = Color.FromArgb(245, 246, 250);
 
-            var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 780 };
+            var split = CreateResponsiveEditorSplit("splitCustomers");
             tabCustomers.Controls.Add(split);
+            InitializeResponsiveEditorSplit(split);
 
             var grpList = new GroupBox
             {
@@ -635,8 +646,15 @@ namespace QuanLyCuaHangBanhMi.Forms
                 PlaceholderText = "Nhập để lọc..."
             };
             txtCustSearch.TextChanged += (s, e) => LoadCustomersTab();
-            pnlSearch.Controls.AddRange(new Control[] { lblSearch, txtCustSearch });
-            grpList.Controls.Add(pnlSearch);
+            lblCustDataStatus = new Label
+            {
+                Dock = DockStyle.Right,
+                Width = 260,
+                TextAlign = ContentAlignment.MiddleRight,
+                ForeColor = Color.DimGray,
+                Font = new Font("Segoe UI", 9F)
+            };
+            pnlSearch.Controls.AddRange(new Control[] { lblSearch, txtCustSearch, lblCustDataStatus });
 
             dgvCustomers = new DataGridView
             {
@@ -651,7 +669,10 @@ namespace QuanLyCuaHangBanhMi.Forms
                 RowHeadersVisible = false
             };
             dgvCustomers.CellClick += (s, e) => BindCustomerToForm();
+            grpList.Controls.Add(pnlSearch);
             grpList.Controls.Add(dgvCustomers);
+            // DockStyle.Fill phải đứng trước DockStyle.Top trong z-order để bảng
+            // nhận phần diện tích còn lại, thay vì nằm dưới panel tìm kiếm.
             dgvCustomers.BringToFront();
 
             var grpForm = new GroupBox
@@ -745,12 +766,20 @@ namespace QuanLyCuaHangBanhMi.Forms
                 string keyword = (txtCustSearch?.Text ?? "").Trim();
                 var dt = CustomerService.Search(keyword);
                 dgvCustomers.DataSource = dt;
+                lblCustDataStatus.Text = dt.Rows.Count == 0
+                    ? "Không có khách hàng phù hợp."
+                    : $"Đã tải {dt.Rows.Count:N0} khách hàng.";
+                lblCustDataStatus.ForeColor = dt.Rows.Count == 0 ? Color.DarkOrange : Color.SeaGreen;
                 if (dgvCustomers.Columns["MaKhachHang"] != null) dgvCustomers.Columns["MaKhachHang"].Visible = false;
                 if (dgvCustomers.Columns["MaHang"] != null) dgvCustomers.Columns["MaHang"].Visible = false;
                 if (dgvCustomers.Columns["Điểm"] != null) dgvCustomers.Columns["Điểm"].DefaultCellStyle.Format = "N0";
             }
             catch (Exception ex)
             {
+                dgvCustomers.DataSource = null;
+                lblCustDataStatus.Text = "Tải dữ liệu thất bại.";
+                lblCustDataStatus.ForeColor = Color.Firebrick;
+                ApplicationLogger.Error("Loading customers in FormMain failed.", ex);
                 MessageBox.Show("Lỗi tải khách hàng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -877,6 +906,7 @@ namespace QuanLyCuaHangBanhMi.Forms
         private DateTimePicker dtpPromoEnd = null!;
         private CheckBox chkPromoActive = null!;
         private CheckBox chkPromoNoMax = null!;
+        private Label lblPromoDataStatus = null!;
         private int _selectedPromoId = 0;
 
         private void InitializePromosTab()
@@ -909,6 +939,18 @@ namespace QuanLyCuaHangBanhMi.Forms
             };
             dgvPromos.CellClick += (s, e) => BindPromoToForm();
             grpList.Controls.Add(dgvPromos);
+
+            lblPromoDataStatus = new Label
+            {
+                Dock = DockStyle.Bottom,
+                Height = 28,
+                TextAlign = ContentAlignment.MiddleRight,
+                Padding = new Padding(0, 0, 8, 0),
+                ForeColor = Color.DimGray,
+                Font = new Font("Segoe UI", 9F)
+            };
+            grpList.Controls.Add(lblPromoDataStatus);
+            lblPromoDataStatus.BringToFront();
 
             var grpForm = new GroupBox
             {
@@ -1099,6 +1141,10 @@ namespace QuanLyCuaHangBanhMi.Forms
 
                 var dt = PromotionService.GetAll();
                 dgvPromos.DataSource = dt;
+                lblPromoDataStatus.Text = dt.Rows.Count == 0
+                    ? "Chưa có chương trình khuyến mãi."
+                    : $"Đã tải {dt.Rows.Count:N0} chương trình khuyến mãi.";
+                lblPromoDataStatus.ForeColor = dt.Rows.Count == 0 ? Color.DarkOrange : Color.SeaGreen;
                 foreach (string col in new[] { "MaKhuyenMai", "LoaiGiam", "MaChiNhanh" })
                     if (dgvPromos.Columns[col] != null) dgvPromos.Columns[col].Visible = false;
                 foreach (string col in new[] { "Giá trị", "Trần", "Đơn TT" })
@@ -1108,6 +1154,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
             catch (Exception ex)
             {
+                dgvPromos.DataSource = null;
+                lblPromoDataStatus.Text = "Tải dữ liệu thất bại.";
+                lblPromoDataStatus.ForeColor = Color.Firebrick;
+                ApplicationLogger.Error("Loading promotions in FormMain failed.", ex);
                 MessageBox.Show("Lỗi tải khuyến mãi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1272,6 +1322,48 @@ namespace QuanLyCuaHangBanhMi.Forms
             return btn;
         }
 
+        /// <summary>
+        /// Tạo vùng danh sách + biểu mẫu có panel nhập liệu bên phải giữ kích thước ổn định.
+        /// SplitterDistance không được gán tại đây vì SplitContainer mới tạo chỉ rộng 150 px;
+        /// WinForms sẽ ép giá trị và giữ tỷ lệ sai khi control được phóng ra kích thước thật.
+        /// </summary>
+        private static SplitContainer CreateResponsiveEditorSplit(string name) => new SplitContainer
+        {
+            Name = name,
+            Dock = DockStyle.Fill,
+            FixedPanel = FixedPanel.Panel2,
+            SplitterWidth = 6,
+            TabStop = false
+        };
+
+        private static void InitializeResponsiveEditorSplit(SplitContainer split)
+        {
+            const int minimumListWidth = 480;
+            const int minimumEditorWidth = 320;
+            const int preferredEditorWidth = 340;
+            bool initialized = false;
+
+            void ApplyInitialDistance()
+            {
+                if (initialized) return;
+
+                int availableWidth = split.ClientSize.Width - split.SplitterWidth;
+                if (availableWidth < minimumListWidth + minimumEditorWidth) return;
+
+                split.Panel1MinSize = minimumListWidth;
+                split.Panel2MinSize = minimumEditorWidth;
+                split.SplitterDistance = Math.Clamp(
+                    availableWidth - preferredEditorWidth,
+                    minimumListWidth,
+                    availableWidth - minimumEditorWidth);
+                initialized = true;
+            }
+
+            split.HandleCreated += (_, _) => ApplyInitialDistance();
+            split.SizeChanged += (_, _) => ApplyInitialDistance();
+            ApplyInitialDistance();
+        }
+
         #endregion
 
         #region ======================== 2. MODULE KHO NGUYÊN LIỆU ========================
@@ -1287,14 +1379,16 @@ namespace QuanLyCuaHangBanhMi.Forms
         private GroupBox grpIngredientEditor = null!;
         private Button btnSaveIngredient = null!;
         private Button btnAddIngredientStock = null!;
+        private Label lblIngredientDataStatus = null!;
         private int _selectedIngredientID = 0;
 
         private void InitializeIngredientsTab()
         {
             tabIngredients.BackColor = Color.FromArgb(245, 246, 250);
 
-            var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 780 };
+            var split = CreateResponsiveEditorSplit("splitIngredients");
             tabIngredients.Controls.Add(split);
+            InitializeResponsiveEditorSplit(split);
 
             // Bảng danh sách
             var grpList = new GroupBox
@@ -1316,20 +1410,33 @@ namespace QuanLyCuaHangBanhMi.Forms
                 AutoSize = true
             };
             chkLowStockOnly.CheckedChanged += (s, e) => LoadIngredientsTab();
-            pnlFilter.Controls.Add(chkLowStockOnly);
-            grpList.Controls.Add(pnlFilter);
+            lblIngredientDataStatus = new Label
+            {
+                Dock = DockStyle.Right,
+                Width = 260,
+                TextAlign = ContentAlignment.MiddleRight,
+                ForeColor = Color.DimGray,
+                Font = new Font("Segoe UI", 9F)
+            };
+            pnlFilter.Controls.AddRange(new Control[] { chkLowStockOnly, lblIngredientDataStatus });
 
             dgvIngredients = new DataGridView
             {
                 Dock = DockStyle.Fill,
                 ReadOnly = true,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 BackgroundColor = Color.White,
-                Font = new Font("Segoe UI", 9.5F)
+                Font = new Font("Segoe UI", 9.5F),
+                AllowUserToAddRows = false,
+                RowHeadersVisible = false
             };
             dgvIngredients.CellClick += (s, e) => BindIngredientToForm();
+            grpList.Controls.Add(pnlFilter);
             grpList.Controls.Add(dgvIngredients);
+            // Giữ hàng tiêu đề của bảng bên dưới panel bộ lọc, không để hai control
+            // DockStyle.Fill/DockStyle.Top chồng lên nhau.
             dgvIngredients.BringToFront();
 
             // Form cập nhật
@@ -1409,6 +1516,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             {
                 DataTable dt = IngredientService.GetAll(chkLowStockOnly.Checked);
                 dgvIngredients.DataSource = dt;
+                lblIngredientDataStatus.Text = dt.Rows.Count == 0
+                    ? "Không có nguyên liệu phù hợp bộ lọc."
+                    : $"Đã tải {dt.Rows.Count:N0} nguyên liệu.";
+                lblIngredientDataStatus.ForeColor = dt.Rows.Count == 0 ? Color.DarkOrange : Color.SeaGreen;
                 if (dgvIngredients.Columns["IngredientID"] != null)
                     dgvIngredients.Columns["IngredientID"].Visible = false;
 
@@ -1417,6 +1528,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
             catch (Exception ex)
             {
+                dgvIngredients.DataSource = null;
+                lblIngredientDataStatus.Text = "Tải dữ liệu thất bại.";
+                lblIngredientDataStatus.ForeColor = Color.Firebrick;
+                ApplicationLogger.Error("Loading ingredients in FormMain failed.", ex);
                 MessageBox.Show("Lỗi tải kho nguyên liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1703,10 +1818,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             pnlSubRev.Controls.Add(pnlFilter);
 
             var lblFrom = new Label { Text = "Từ ngày:", Location = new Point(12, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpRevFrom = new DateTimePicker { Location = new Point(78, 13), Size = new Size(115, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9.5F) };
+            dtpRevFrom = new DateTimePicker { Location = new Point(78, 13), Size = new Size(115, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today.AddDays(-29), Font = new Font("Segoe UI", 9.5F) };
 
             var lblTo = new Label { Text = "Đến ngày:", Location = new Point(200, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpRevTo = new DateTimePicker { Location = new Point(275, 13), Size = new Size(115, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 30), Font = new Font("Segoe UI", 9.5F) };
+            dtpRevTo = new DateTimePicker { Location = new Point(275, 13), Size = new Size(115, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today, Font = new Font("Segoe UI", 9.5F) };
 
             var lblBranch = new Label { Text = "Chi nhánh:", Location = new Point(400, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
             cboRevBranch = new ComboBox { Location = new Point(475, 13), Size = new Size(175, 26), DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9.5F) };
@@ -1720,11 +1835,11 @@ namespace QuanLyCuaHangBanhMi.Forms
             var btnFilter = CreateActionButton("🔍 Tra Cứu", Color.FromArgb(41, 128, 185), new Point(905, 11), 95);
             btnFilter.Click += (s, e) => LoadRevenueReport();
 
-            var btnQuickMonth = CreateActionButton("⚡ Cả Tháng 9", Color.FromArgb(52, 73, 94), new Point(1005, 11), 105);
+            var btnQuickMonth = CreateActionButton("⚡ 30 Ngày", Color.FromArgb(52, 73, 94), new Point(1005, 11), 105);
             btnQuickMonth.Click += (s, e) =>
             {
-                dtpRevFrom.Value = new DateTime(2026, 9, 1);
-                dtpRevTo.Value = new DateTime(2026, 9, 30);
+                dtpRevFrom.Value = DateTime.Today.AddDays(-29);
+                dtpRevTo.Value = DateTime.Today;
                 LoadRevenueReport();
             };
 
@@ -1840,10 +1955,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             pnlSubBestSeller.Controls.Add(pnlFilter);
 
             var lblFrom = new Label { Text = "Từ:", Location = new Point(12, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpTopFrom = new DateTimePicker { Location = new Point(45, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9.5F) };
+            dtpTopFrom = new DateTimePicker { Location = new Point(45, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today.AddDays(-29), Font = new Font("Segoe UI", 9.5F) };
 
             var lblTo = new Label { Text = "Đến:", Location = new Point(160, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpTopTo = new DateTimePicker { Location = new Point(200, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 30), Font = new Font("Segoe UI", 9.5F) };
+            dtpTopTo = new DateTimePicker { Location = new Point(200, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today, Font = new Font("Segoe UI", 9.5F) };
 
             var lblBranch = new Label { Text = "Chi nhánh:", Location = new Point(318, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
             cboTopBranch = new ComboBox { Location = new Point(390, 13), Size = new Size(155, 26), DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9.5F) };
@@ -2027,8 +2142,8 @@ namespace QuanLyCuaHangBanhMi.Forms
             txtInvSearch.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) LoadInventoryReport(); };
 
             var lblPeriod = new Label { Text = "Kỳ tiêu hao:", Location = new Point(758, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpInvFrom = new DateTimePicker { Location = new Point(838, 13), Size = new Size(105, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9.5F) };
-            dtpInvTo = new DateTimePicker { Location = new Point(948, 13), Size = new Size(105, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 30), Font = new Font("Segoe UI", 9.5F) };
+            dtpInvFrom = new DateTimePicker { Location = new Point(838, 13), Size = new Size(105, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today.AddDays(-29), Font = new Font("Segoe UI", 9.5F) };
+            dtpInvTo = new DateTimePicker { Location = new Point(948, 13), Size = new Size(105, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today, Font = new Font("Segoe UI", 9.5F) };
 
             var btnFilter = CreateActionButton("🔍 Tra Cứu", Color.FromArgb(41, 128, 185), new Point(1060, 11), 90);
             btnFilter.Click += (s, e) => LoadInventoryReport();
@@ -2179,10 +2294,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             cboChartType.SelectedIndexChanged += (s, e) => LoadChartReport();
 
             var lblFrom = new Label { Text = "Từ:", Location = new Point(425, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpChartFrom = new DateTimePicker { Location = new Point(455, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9.5F) };
+            dtpChartFrom = new DateTimePicker { Location = new Point(455, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today.AddDays(-29), Font = new Font("Segoe UI", 9.5F) };
 
             var lblTo = new Label { Text = "Đến:", Location = new Point(575, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            dtpChartTo = new DateTimePicker { Location = new Point(615, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 30), Font = new Font("Segoe UI", 9.5F) };
+            dtpChartTo = new DateTimePicker { Location = new Point(615, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = DateTime.Today, Font = new Font("Segoe UI", 9.5F) };
 
             var lblBranch = new Label { Text = "Chi nhánh:", Location = new Point(735, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
             cboChartBranch = new ComboBox { Location = new Point(810, 13), Size = new Size(160, 26), DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9.5F) };
@@ -2337,10 +2452,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             // 2. Phạm vi dữ liệu
             var grpRange = new GroupBox { Text = "2. Phạm vi dữ liệu", Location = new Point(15, 165), Size = new Size(340, 140), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
             var lblF = new Label { Text = "Từ ngày:", Location = new Point(15, 28), AutoSize = true, Font = new Font("Segoe UI", 9F) };
-            dtpExpFrom = new DateTimePicker { Location = new Point(90, 25), Size = new Size(130, 24), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9F) };
+            dtpExpFrom = new DateTimePicker { Location = new Point(90, 25), Size = new Size(130, 24), Format = DateTimePickerFormat.Short, Value = DateTime.Today.AddDays(-29), Font = new Font("Segoe UI", 9F) };
 
             var lblT = new Label { Text = "Đến ngày:", Location = new Point(15, 63), AutoSize = true, Font = new Font("Segoe UI", 9F) };
-            dtpExpTo = new DateTimePicker { Location = new Point(90, 60), Size = new Size(130, 24), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 30), Font = new Font("Segoe UI", 9F) };
+            dtpExpTo = new DateTimePicker { Location = new Point(90, 60), Size = new Size(130, 24), Format = DateTimePickerFormat.Short, Value = DateTime.Today, Font = new Font("Segoe UI", 9F) };
 
             var lblB = new Label { Text = "Chi nhánh:", Location = new Point(15, 98), AutoSize = true, Font = new Font("Segoe UI", 9F) };
             cboExpBranch = new ComboBox { Location = new Point(90, 95), Size = new Size(235, 24), DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9F) };
@@ -2649,13 +2764,13 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         #region ======================== 6. MODULE QUẢN TRỊ ========================
 
-        private AdministrationControl administration = null!;
+        private AdministrationDashboardControl administration = null!;
 
         private void InitializeEmployeesTab()
         {
             tabEmployees.BackColor = Color.FromArgb(245, 246, 250);
             tabEmployees.Controls.Clear();
-            administration = new AdministrationControl { Dock = DockStyle.Fill };
+            administration = new AdministrationDashboardControl { Dock = DockStyle.Fill };
             tabEmployees.Controls.Add(administration);
         }
 

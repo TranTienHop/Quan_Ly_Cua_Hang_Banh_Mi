@@ -15,14 +15,23 @@ namespace QuanLyCuaHangBanhMi.Services
         public LoginStatus TryLogin(string username, string password, out LoginResult? result)
         {
             result = null;
-            DataTable dt = AuthRepository.FindByUsername(username.Trim());
+            bool lockoutEnabled = AuthRepository.HasLockoutSchema();
+            DataTable dt = AuthRepository.FindByUsername(username.Trim(), lockoutEnabled);
             if (dt.Rows.Count == 0)
                 return LoginStatus.InvalidCredentials;
 
             DataRow row = dt.Rows[0];
+            int accountId = Convert.ToInt32(row["MaTaiKhoan"]);
+            if (lockoutEnabled && AuthRepository.IsTemporarilyLocked(accountId))
+                return LoginStatus.TemporarilyLocked;
+
             string passwordHash = row["MatKhauBam"].ToString() ?? string.Empty;
             if (!PasswordHasher.Verify(password, passwordHash))
+            {
+                if (lockoutEnabled && AuthRepository.RecordFailedLogin(accountId))
+                    return LoginStatus.TemporarilyLocked;
                 return LoginStatus.InvalidCredentials;
+            }
 
             bool isActive = Convert.ToBoolean(row["DangHoatDong"]) && Convert.ToBoolean(row["NhanVienDangHoatDong"]);
             int roleId = Convert.ToInt32(row["MaVaiTroId"]);
@@ -46,10 +55,12 @@ namespace QuanLyCuaHangBanhMi.Services
             if (!isActive)
                 return LoginStatus.Locked;
 
-            ApplySession(result);
+            if (lockoutEnabled)
+                AuthRepository.ClearFailedLoginState(accountId);
             if (PasswordHasher.NeedsRehash(passwordHash))
                 AuthRepository.UpdatePasswordHash(result.UserId, PasswordHasher.Hash(password));
             AuthRepository.UpdateLastLogin(result.UserId);
+            ApplySession(result);
             return LoginStatus.Success;
         }
 
