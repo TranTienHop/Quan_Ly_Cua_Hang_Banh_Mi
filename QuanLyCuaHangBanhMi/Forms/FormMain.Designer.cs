@@ -26,6 +26,15 @@ namespace QuanLyCuaHangBanhMi.Forms
         private System.Windows.Forms.TabPage tabIngredients;
         private System.Windows.Forms.TabPage tabReports;
         private System.Windows.Forms.TabPage tabEmployees;
+        private System.Windows.Forms.Panel panelSubmenuIngredients;
+        private System.Windows.Forms.Button btnSubIngFormula;
+        private System.Windows.Forms.Button btnSubIngImportExport;
+        private System.Windows.Forms.Button btnSubIngTransfer;
+        private System.Windows.Forms.Button btnSubIngStockTake;
+        private System.Windows.Forms.Button btnSubIngLowStock;
+        private System.Windows.Forms.Button btnSubIngSuppliers;
+        private System.Windows.Forms.Button btnSubIngDevices;
+
 
         protected override void Dispose(bool disposing)
         {
@@ -61,6 +70,16 @@ namespace QuanLyCuaHangBanhMi.Forms
             this.tabIngredients = new System.Windows.Forms.TabPage();
             this.tabReports = new System.Windows.Forms.TabPage();
             this.tabEmployees = new System.Windows.Forms.TabPage();
+            this.panelSubmenuIngredients = new System.Windows.Forms.Panel();
+            this.btnSubIngFormula = new System.Windows.Forms.Button();
+            this.btnSubIngImportExport = new System.Windows.Forms.Button();
+            this.btnSubIngTransfer = new System.Windows.Forms.Button();
+            this.btnSubIngStockTake = new System.Windows.Forms.Button();
+            this.btnSubIngLowStock = new System.Windows.Forms.Button();
+            this.btnSubIngSuppliers = new System.Windows.Forms.Button();
+            this.btnSubIngDevices = new System.Windows.Forms.Button();
+
+
 
             // FormMain
             this.ClientSize = new System.Drawing.Size(1280, 760);
@@ -147,6 +166,36 @@ namespace QuanLyCuaHangBanhMi.Forms
             StyleNavButton(this.btnNavReports, "📊  Báo Cáo Doanh Thu");
             StyleNavButton(this.btnNavEmployees, "👥  Nhân Viên");
 
+            // panelSubmenuIngredients - 7 lựa chọn kho
+            this.panelSubmenuIngredients.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSubmenuIngredients.Height = 294; // 7 mục x 42px
+            this.panelSubmenuIngredients.Visible = false;
+            this.panelSubmenuIngredients.BackColor = System.Drawing.Color.FromArgb(34, 49, 63);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngDevices);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngSuppliers);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngLowStock);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngStockTake);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngTransfer);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngImportExport);
+            this.panelSubmenuIngredients.Controls.Add(this.btnSubIngFormula);
+
+            StyleSubNavButton(this.btnSubIngFormula, "  🥣  Nguyên liệu - công thức");
+            StyleSubNavButton(this.btnSubIngImportExport, "  📥  Nhập/xuất kho");
+            StyleSubNavButton(this.btnSubIngTransfer, "  🔄  Điều chuyển kho");
+            StyleSubNavButton(this.btnSubIngStockTake, "  📋  Kiểm kho");
+            StyleSubNavButton(this.btnSubIngLowStock, "  ⚠️  Cảnh báo tồn thấp");
+            StyleSubNavButton(this.btnSubIngSuppliers, "  🏢  Nhà cung cấp");
+            StyleSubNavButton(this.btnSubIngDevices, "  ⚙️  Thiết bị");
+
+            StyleNavButton(this.btnNavPOS, "🛒  BÁN HÀNG");
+            StyleNavButton(this.btnNavDashboard, "🏠  Tổng Quan");
+            StyleNavButton(this.btnNavProducts, "🥪  Thực Đơn (Món)");
+            StyleNavButton(this.btnNavCustomers, "👤  Khách Hàng");
+            StyleNavButton(this.btnNavPromos, "🎁  Chương Trình KM");
+            StyleNavButton(this.btnNavIngredients, "🥬  Kho Nguyên Liệu  ▾");
+            StyleNavButton(this.btnNavReports, "📊  Báo Cáo Doanh Thu");
+            StyleNavButton(this.btnNavEmployees, "👥  Nhân Viên");
+
             // panelContent
             this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContent.Controls.Add(this.tabMain);
@@ -188,6 +237,23 @@ namespace QuanLyCuaHangBanhMi.Forms
             btn.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             btn.Cursor = System.Windows.Forms.Cursors.Hand;
             btn.Click += this.btnNav_Click;
+        }
+
+        private void StyleSubNavButton(System.Windows.Forms.Button btn, string text)
+        {
+            btn.Dock = System.Windows.Forms.DockStyle.Top;
+            btn.Height = 42;
+            btn.Text = text;
+            btn.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            btn.ForeColor = System.Drawing.Color.FromArgb(200, 214, 229);
+            btn.BackColor = System.Drawing.Color.FromArgb(34, 49, 63);
+            btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btn.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            btn.Cursor = System.Windows.Forms.Cursors.Hand;
+            btn.Click += this.btnSubIng_Click;
         }
     }
 }

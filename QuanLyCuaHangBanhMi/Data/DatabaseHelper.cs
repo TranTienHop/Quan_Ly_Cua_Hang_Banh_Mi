@@ -10,7 +10,7 @@ namespace QuanLyCuaHangBanhMi.Data
     {
         // Chuỗi kết nối đến SQL Server localhost\SQLEXPRESS01
         public static string ConnectionString { get; set; } =
-            "Server=localhost\\SQL2025;Database=QuanLyBanhMi;Trusted_Connection=True;TrustServerCertificate=True;";
+            "Server=LAPTOP-APPVC4J1\\SQLEXPRESS;Database=QuanLyBanhMi;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public static SqlConnection GetConnection()
         {

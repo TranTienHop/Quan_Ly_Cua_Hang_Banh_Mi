@@ -76,18 +76,47 @@ namespace QuanLyCuaHangBanhMi.Forms
                 OpenOrderScreen();
                 return;
             }
-
+            if (sender != btnNavIngredients)
+            {
+                // Thu gọn submenu kho nếu chuyển sang module khác
+                panelSubmenuIngredients.Visible = false;
+                btnNavIngredients.Text = "🥬  Kho Nguyên Liệu  ▾";
+            }
             if (sender == btnNavDashboard) NavigateToTab(0);
             else if (sender == btnNavProducts) NavigateToTab(1);
             else if (sender == btnNavCustomers) NavigateToTab(2);
             else if (sender == btnNavPromos) NavigateToTab(3);
-            else if (sender == btnNavIngredients) NavigateToTab(4);
+            else if (sender == btnNavIngredients)
+            {
+                ToggleIngredientsSubmenu();
+            }
             else if (sender == btnNavReports) NavigateToTab(5);
             else if (sender == btnNavEmployees) NavigateToTab(6);
         }
 
+        private void ToggleIngredientsSubmenu()
+        {
+            bool willOpen = !panelSubmenuIngredients.Visible;
+            panelSubmenuIngredients.Visible = willOpen;
+            btnNavIngredients.Text = willOpen ? "🥬  Kho Nguyên Liệu  ▴" : "🥬  Kho Nguyên Liệu  ▾";
+            // Chuyển sang màn hình kho và giữ sidebar mở
+            NavigateToTab(4, keepSidebarOpen: true);
+        }
+
+        private void btnSubIng_Click(object? sender, EventArgs e)
+        {
+            if (sender is not Button btn) return;
+            if (btn == btnSubIngFormula) OpenWarehouseFunction(1, "Nguyên liệu - công thức");
+            else if (btn == btnSubIngImportExport) OpenWarehouseFunction(2, "Nhập/xuất kho");
+            else if (btn == btnSubIngTransfer) OpenWarehouseFunction(3, "Điều chuyển kho");
+            else if (btn == btnSubIngStockTake) OpenWarehouseFunction(4, "Kiểm kho");
+            else if (btn == btnSubIngLowStock) OpenWarehouseFunction(5, "Cảnh báo tồn thấp");
+            else if (btn == btnSubIngSuppliers) OpenWarehouseFunction(6, "Nhà cung cấp");
+            else if (btn == btnSubIngDevices) OpenWarehouseFunction(7, "Thiết bị");
+        }
+
         /// <summary>0=Tổng quan, 1=Thực đơn, 2=Khách, 3=KM, 4=Kho, 5=Báo cáo, 6=Nhân viên</summary>
-        public void NavigateToTab(int tabIndex)
+        public void NavigateToTab(int tabIndex, bool keepSidebarOpen = false)
         {
             var navButtons = new[]
             {
@@ -104,9 +133,13 @@ namespace QuanLyCuaHangBanhMi.Forms
                 LoadDashboardTab();
                 EnsureDashboardSidebarOpen();
             }
+            else if (keepSidebarOpen)
+            {
+                panelSidebar.Visible = true;
+                PerformLayout();
+            }
             else
             {
-                // Module khác: đóng sidebar (mở lại bằng ☰)
                 panelSidebar.Visible = false;
                 PerformLayout();
             }
@@ -1230,187 +1263,210 @@ namespace QuanLyCuaHangBanhMi.Forms
 
         #endregion
 
-        #region ======================== 2. MODULE KHO NGUYÊN LIỆU ========================
-
-        private DataGridView dgvIngredients = null!;
-        private CheckBox chkLowStockOnly = null!;
-        private TextBox txtIngCode = null!;
-        private TextBox txtIngName = null!;
-        private TextBox txtIngUnit = null!;
-        private NumericUpDown numIngCurrentStock = null!;
-        private NumericUpDown numIngMinStock = null!;
-        private NumericUpDown numIngCost = null!;
-        private int _selectedIngredientID = 0;
+        #region ======================== 2. MODULE KHO NGUYÊN LIỆU (DANH SÁCH 7 CHỨC NĂNG) ========================
 
         private void InitializeIngredientsTab()
         {
-            tabIngredients.BackColor = Color.FromArgb(245, 246, 250);
+            tabIngredients.BackColor = Color.FromArgb(244, 246, 249);
+            tabIngredients.Controls.Clear();
 
-            var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 780 };
-            tabIngredients.Controls.Add(split);
-
-            // Bảng danh sách
-            var grpList = new GroupBox
+            var pnlMainContainer = new Panel
             {
-                Text = "📦 DANH SÁCH NGUYÊN LIỆU TRONG KHO",
                 Dock = DockStyle.Fill,
-                Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
-                Padding = new Padding(10)
+                AutoScroll = true,
+                Padding = new Padding(30, 20, 30, 30)
             };
-            split.Panel1.Controls.Add(grpList);
+            tabIngredients.Controls.Add(pnlMainContainer);
 
-            var pnlFilter = new Panel { Dock = DockStyle.Top, Height = 40 };
-            chkLowStockOnly = new CheckBox
+            // Tiêu đề
+            var pnlHeader = new Panel { Dock = DockStyle.Top, Height = 85, BackColor = Color.Transparent };
+            pnlMainContainer.Controls.Add(pnlHeader);
+
+            var lblTitle = new Label
             {
-                Text = "⚠️ Chỉ hiện nguyên liệu sắp hết (Cảnh báo tồn kho)",
-                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(192, 57, 43),
-                Location = new Point(10, 8),
+                Text = "📦  DANH SÁCH CHỨC NĂNG KHO NGUYÊN LIỆU",
+                Font = new Font("Segoe UI", 16F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(44, 62, 80),
+                Location = new Point(0, 5),
                 AutoSize = true
             };
-            chkLowStockOnly.CheckedChanged += (s, e) => LoadIngredientsTab();
-            pnlFilter.Controls.Add(chkLowStockOnly);
-            grpList.Controls.Add(pnlFilter);
+            pnlHeader.Controls.Add(lblTitle);
 
-            dgvIngredients = new DataGridView
+            var lblSubtitle = new Label
             {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                BackgroundColor = Color.White,
-                Font = new Font("Segoe UI", 9.5F)
+                Text = "Chọn một chức năng bên dưới hoặc trên thanh menu bên trái để mở cửa sổ làm việc tương ứng:",
+                Font = new Font("Segoe UI", 10.5F),
+                ForeColor = Color.FromArgb(127, 140, 141),
+                Location = new Point(2, 42),
+                AutoSize = true
             };
-            dgvIngredients.CellClick += (s, e) => BindIngredientToForm();
-            grpList.Controls.Add(dgvIngredients);
-            dgvIngredients.BringToFront();
+            pnlHeader.Controls.Add(lblSubtitle);
 
-            // Form cập nhật
-            var grpForm = new GroupBox
+            // Danh sách các thẻ chức năng
+            var pnlList = new FlowLayoutPanel
             {
-                Text = "QUẢN LÝ NGUYÊN LIỆU",
-                Dock = DockStyle.Fill,
-                Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
-                Padding = new Padding(15)
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                BackColor = Color.Transparent
             };
-            split.Panel2.Controls.Add(grpForm);
+            pnlMainContainer.Controls.Add(pnlList);
+            pnlList.BringToFront();
 
-            int y = 30;
-            var l1 = new Label { Text = "Mã nguyên liệu:", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
-            txtIngCode = new TextBox { Location = new Point(20, y + 22), Size = new Size(280, 26), Font = new Font("Segoe UI", 9.5F) };
-
-            y += 60;
-            var l2 = new Label { Text = "Tên nguyên liệu:", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
-            txtIngName = new TextBox { Location = new Point(20, y + 22), Size = new Size(280, 26), Font = new Font("Segoe UI", 9.5F) };
-
-            y += 60;
-            var l3 = new Label { Text = "Đơn vị (Kg, Quả, Ổ, Hộp...):", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
-            txtIngUnit = new TextBox { Location = new Point(20, y + 22), Size = new Size(280, 26), Font = new Font("Segoe UI", 9.5F) };
-
-            y += 60;
-            var l4 = new Label { Text = "Số lượng tồn kho:", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
-            numIngCurrentStock = new NumericUpDown { Location = new Point(20, y + 22), Size = new Size(280, 26), Maximum = 100000, DecimalPlaces = 2, Font = new Font("Segoe UI", 9.5F) };
-
-            y += 60;
-            var l5 = new Label { Text = "Tồn kho tối thiểu:", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
-            numIngMinStock = new NumericUpDown { Location = new Point(20, y + 22), Size = new Size(280, 26), Maximum = 100000, DecimalPlaces = 2, Font = new Font("Segoe UI", 9.5F) };
-
-            y += 60;
-            var l6 = new Label { Text = "Giá vốn (VNĐ):", Location = new Point(20, y), AutoSize = true, Font = new Font("Segoe UI", 9.5F) };
-            numIngCost = new NumericUpDown { Location = new Point(20, y + 22), Size = new Size(280, 26), Maximum = 10000000, Increment = 1000, Font = new Font("Segoe UI", 9.5F) };
-
-            y += 60;
-            var btnSaveIng = new Button { Text = "💾 Lưu / Cập Nhật", Location = new Point(20, y), Size = new Size(135, 36), BackColor = Color.FromArgb(41, 128, 185), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            btnSaveIng.FlatAppearance.BorderSize = 0;
-            btnSaveIng.Click += (s, e) => SaveIngredient();
-
-            var btnAddStock = new Button { Text = "📥 Nhập Thêm", Location = new Point(165, y), Size = new Size(135, 36), BackColor = Color.FromArgb(39, 174, 96), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            btnAddStock.FlatAppearance.BorderSize = 0;
-            btnAddStock.Click += (s, e) => QuickAddStock();
-
-            grpForm.Controls.AddRange(new Control[]
+            var functions = new (int Id, string Icon, string Name, string Desc, Color Accent)[]
             {
-                l1, txtIngCode, l2, txtIngName, l3, txtIngUnit,
-                l4, numIngCurrentStock, l5, numIngMinStock, l6, numIngCost,
-                btnSaveIng, btnAddStock
-            });
+                (1, "🥣", "Nguyên liệu - công thức", "Quản lý danh mục nguyên vật liệu, định lượng, công thức chế biến các món", Color.FromArgb(41, 128, 185)),
+                (2, "📥", "Nhập/xuất kho", "Quản lý phiếu nhập kho, xuất nguyên liệu bán hàng và theo dõi công nợ", Color.FromArgb(39, 174, 96)),
+                (3, "🔄", "Điều chuyển kho", "Luân chuyển, điều phối nguyên vật liệu giữa các kho và chi nhánh", Color.FromArgb(142, 68, 173)),
+                (4, "📋", "Kiểm kho", "Kiểm kê kho thực tế, đối soát số lượng và lập biên bản hao hụt", Color.FromArgb(211, 84, 0)),
+                (5, "⚠️", "Cảnh báo tồn thấp", "Danh sách nguyên liệu chạm ngưỡng tồn kho tối thiểu cần nhập hàng gấp", Color.FromArgb(192, 57, 43)),
+                (6, "🏢", "Nhà cung cấp", "Quản lý danh sách các đối tác, nhà phân phối cung cấp nguyên vật liệu", Color.FromArgb(22, 160, 133)),
+                (7, "⚙️", "Thiết bị", "Quản lý danh sách máy móc, trang thiết bị dụng cụ và lịch bảo trì quán", Color.FromArgb(52, 73, 94))
+            };
+
+            foreach (var fn in functions)
+            {
+                pnlList.Controls.Add(CreateFunctionCard(fn.Id, fn.Icon, fn.Name, fn.Desc, fn.Accent));
+            }
+        }
+
+        private Panel CreateFunctionCard(int id, string icon, string title, string description, Color accent)
+        {
+            var card = new Panel
+            {
+                Width = 920,
+                Height = 76,
+                Margin = new Padding(0, 0, 0, 14),
+                BackColor = Color.White,
+                Cursor = Cursors.Hand
+            };
+
+            card.Paint += (s, e) =>
+            {
+                ControlPaint.DrawBorder(e.Graphics, card.ClientRectangle,
+                    Color.FromArgb(226, 232, 240), 1, ButtonBorderStyle.Solid,
+                    Color.FromArgb(226, 232, 240), 1, ButtonBorderStyle.Solid,
+                    Color.FromArgb(226, 232, 240), 1, ButtonBorderStyle.Solid,
+                    Color.FromArgb(226, 232, 240), 1, ButtonBorderStyle.Solid);
+            };
+
+            var pnlIcon = new Panel { Size = new Size(54, 54), Location = new Point(12, 11), BackColor = Color.FromArgb(248, 249, 250), Cursor = Cursors.Hand };
+            var lblIcon = new Label { Text = icon, Font = new Font("Segoe UI Emoji", 20F), Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Cursor = Cursors.Hand };
+            pnlIcon.Controls.Add(lblIcon);
+            card.Controls.Add(pnlIcon);
+
+            var lblTitle = new Label { Text = $"{id}. {title}", Font = new Font("Segoe UI", 12F, FontStyle.Bold), ForeColor = Color.FromArgb(33, 37, 41), Location = new Point(80, 14), AutoSize = true, Cursor = Cursors.Hand };
+            card.Controls.Add(lblTitle);
+
+            var lblDesc = new Label { Text = description, Font = new Font("Segoe UI", 9.5F), ForeColor = Color.FromArgb(108, 117, 125), Location = new Point(81, 41), AutoSize = true, Cursor = Cursors.Hand };
+            card.Controls.Add(lblDesc);
+
+            var btnOpen = new Button
+            {
+                Text = "Mở chức năng  ➔",
+                Size = new Size(145, 38),
+                Location = new Point(card.Width - 165, 19),
+                BackColor = accent,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnOpen.FlatAppearance.BorderSize = 0;
+            card.Controls.Add(btnOpen);
+
+            Action clickHandler = () => OpenWarehouseFunction(id, title);
+            card.Click += (s, e) => clickHandler();
+            pnlIcon.Click += (s, e) => clickHandler();
+            lblIcon.Click += (s, e) => clickHandler();
+            lblTitle.Click += (s, e) => clickHandler();
+            lblDesc.Click += (s, e) => clickHandler();
+            btnOpen.Click += (s, e) => clickHandler();
+
+            void OnHover() => card.BackColor = Color.FromArgb(248, 250, 252);
+            void OnLeave() => card.BackColor = Color.White;
+            card.MouseEnter += (s, e) => OnHover();
+            card.MouseLeave += (s, e) => OnLeave();
+            lblTitle.MouseEnter += (s, e) => OnHover();
+            lblDesc.MouseEnter += (s, e) => OnHover();
+
+            return card;
+        }
+
+        public void OpenWarehouseFunction(int functionId, string functionName)
+        {
+            switch (functionId)
+            {
+                case 1: OpenFormNguyenLieuCongThuc(); break;
+                case 2: OpenFormNhapXuatKho(); break;
+                case 3: OpenFormDieuChuyenKho(); break;
+                case 4: OpenFormKiemKho(); break;
+                case 5: OpenFormCanhBaoTonThap(); break;
+                case 6: OpenFormNhaCungCap(); break;
+                case 7: OpenFormThietBi(); break;
+                default:
+                    MessageBox.Show($"Chức năng: {functionName}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+            }
+        }
+
+        // ==================== CÁC PHƯƠNG THỨC MỞ FORM ====================
+
+        private void OpenFormNguyenLieuCongThuc()
+        {
+            using var frm = new FormNguyenLieu();
+            frm.WindowState = FormWindowState.Maximized;
+            frm.ShowDialog(this);
+        }
+
+        private void OpenFormNhapXuatKho()
+        {
+            // TODO: Thay bằng form riêng khi tạo xong: using var frm = new FormNhapXuatKho(); frm.ShowDialog(this);
+            using var frm = new FormNhapXuatKho();
+            frm.ShowDialog(this);
+            //MessageBox.Show("Mở Form: [Nhập/xuất kho]\n(Bạn có thể gắn Form riêng tại OpenFormNhapXuatKho)", "Kho Nguyên Liệu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void OpenFormDieuChuyenKho()
+        {
+            // TODO: using var frm = new FormDieuChuyenKho(); frm.ShowDialog(this);
+            using var frm = new FormDieuChuyen();
+            frm.ShowDialog(this);
+        }
+
+        private void OpenFormKiemKho()
+        {
+            // TODO: using var frm = new FormKiemKho(); frm.ShowDialog(this);
+            using var frm = new FormKiemKho();
+            frm.ShowDialog(this);
+        }
+
+        private void OpenFormCanhBaoTonThap()
+        {
+            // TODO: using var frm = new FormCanhBaoTonThap(); frm.ShowDialog(this);
+            using var frm = new FormCanhBaoTon();
+            frm.ShowDialog(this);
+        }
+
+        private void OpenFormNhaCungCap()
+        {
+            // TODO: using var frm = new FormNhaCungCap(); frm.ShowDialog(this);
+            using var frm = new FormNhaCungCap();
+            frm.ShowDialog(this);
+        }
+
+        private void OpenFormThietBi()
+        {
+            // TODO: using var frm = new FormThietBi(); frm.ShowDialog(this);
+            using var frm = new FormThietBi();
+            frm.ShowDialog(this);
         }
 
         private void LoadIngredientsTab()
         {
-            try
-            {
-                DataTable dt = IngredientService.GetAll(chkLowStockOnly.Checked);
-                dgvIngredients.DataSource = dt;
-                if (dgvIngredients.Columns["IngredientID"] != null)
-                    dgvIngredients.Columns["IngredientID"].Visible = false;
-
-                if (dgvIngredients.Columns["Giá Vốn"] != null)
-                    dgvIngredients.Columns["Giá Vốn"].DefaultCellStyle.Format = "N0";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tải kho nguyên liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void BindIngredientToForm()
-        {
-            if (dgvIngredients.CurrentRow == null) return;
-            var row = dgvIngredients.CurrentRow;
-            _selectedIngredientID = Convert.ToInt32(row.Cells["IngredientID"].Value);
-            txtIngCode.Text = row.Cells["Mã NL"].Value.ToString();
-            txtIngName.Text = row.Cells["Tên Nguyên Liệu"].Value.ToString();
-            txtIngUnit.Text = row.Cells["ĐVT"].Value.ToString();
-            numIngCurrentStock.Value = Convert.ToDecimal(row.Cells["Tồn Kho"].Value);
-            numIngMinStock.Value = Convert.ToDecimal(row.Cells["Tồn Tối Thiểu"].Value);
-            numIngCost.Value = Convert.ToDecimal(row.Cells["Giá Vốn"].Value);
-        }
-
-        private void SaveIngredient()
-        {
-            string code = txtIngCode.Text.Trim();
-            string name = txtIngName.Text.Trim();
-            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(name))
-            {
-                MessageBox.Show("Vui lòng nhập Mã và Tên nguyên liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                IngredientService.Save(new IngredientSaveModel
-                {
-                    IngredientId = _selectedIngredientID,
-                    Code = code,
-                    Name = name,
-                    Unit = txtIngUnit.Text.Trim(),
-                    CurrentStock = numIngCurrentStock.Value,
-                    MinimumStock = numIngMinStock.Value,
-                    CostPrice = numIngCost.Value
-                });
-                MessageBox.Show(
-                    _selectedIngredientID > 0 ? "Cập nhật nguyên liệu thành công!" : "Thêm nguyên liệu mới thành công!",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                LoadIngredientsTab();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi lưu nguyên liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void QuickAddStock()
-        {
-            if (_selectedIngredientID == 0)
-            {
-                MessageBox.Show("Vui lòng chọn nguyên liệu cần nhập thêm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            numIngCurrentStock.Value += 10;
-            SaveIngredient();
+            // Giao diện danh sách tĩnh, không cần load lại DB
         }
 
         #endregion
