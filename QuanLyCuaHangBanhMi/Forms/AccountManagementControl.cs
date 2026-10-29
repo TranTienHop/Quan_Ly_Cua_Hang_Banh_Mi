@@ -28,9 +28,13 @@ namespace QuanLyCuaHangBanhMi.Forms
             _view.AddButton.Click += (_, _) => CreateAccount();
             _view.EditButton.Click += (_, _) => ResetSelectedPassword();
             _view.LockButton.Click += (_, _) => ToggleSelectedStatus();
-            _view.UsersGrid.RowEditClicked += (_, _) => ResetSelectedPassword();
-            _view.UsersGrid.RowDeleteClicked += (_, _) => ToggleSelectedStatus();
-            _view.UsersGrid.CellDoubleClick += (_, e) => { if (e.RowIndex >= 0) ResetSelectedPassword(); };
+            _view.RowEditClicked += (_, _) => ResetSelectedPassword();
+            _view.RowToggleStatusClicked += (_, _) => ToggleSelectedStatus();
+            _view.UsersGrid.CellDoubleClick += (_, e) =>
+            {
+                if (e.RowIndex >= 0 && !_view.IsActionColumn(e.ColumnIndex))
+                    ResetSelectedPassword();
+            };
         }
 
         public void LoadData()

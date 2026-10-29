@@ -30,7 +30,7 @@ namespace QuanLyCuaHangBanhMi.Forms.Administration
             btnEdit = new ModernButton();
             btnLock = new ModernButton();
             gridCard = new Panel();
-            usersGrid = new ModernDataGrid();
+            usersGrid = new DataGridView();
             colSTT = new DataGridViewTextBoxColumn();
             colUserId = new DataGridViewTextBoxColumn();
             colUsername = new DataGridViewTextBoxColumn();
@@ -267,7 +267,7 @@ namespace QuanLyCuaHangBanhMi.Forms.Administration
             usersGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             usersGrid.BackgroundColor = Color.White;
             usersGrid.BorderStyle = BorderStyle.None;
-            usersGrid.ColumnHeadersHeight = 44;
+            usersGrid.ColumnHeadersHeight = 38;
             usersGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             usersGrid.Columns.AddRange(new DataGridViewColumn[] { colSTT, colUserId, colUsername, colEmployee, colRole, colBranch, colStatus, colCreatedAt, colActions });
             usersGrid.Dock = DockStyle.Fill;
@@ -277,7 +277,7 @@ namespace QuanLyCuaHangBanhMi.Forms.Administration
             usersGrid.Name = "usersGrid";
             usersGrid.ReadOnly = true;
             usersGrid.RowHeadersVisible = false;
-            usersGrid.RowTemplate.Height = 44;
+            usersGrid.RowTemplate.Height = 34;
             usersGrid.ScrollBars = ScrollBars.Both;
             usersGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             usersGrid.ShowCellToolTips = true;
@@ -371,11 +371,11 @@ namespace QuanLyCuaHangBanhMi.Forms.Administration
             colActions.DataPropertyName = "Thao_tác";
             colActions.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colActions.HeaderText = "Thao tác";
-            colActions.MinimumWidth = 95;
+            colActions.MinimumWidth = 160;
             colActions.Name = "Thao_tác";
             colActions.ReadOnly = true;
             colActions.SortMode = DataGridViewColumnSortMode.NotSortable;
-            colActions.Width = 100;
+            colActions.Width = 160;
             // 
             // pagerLayout
             // 
@@ -519,7 +519,7 @@ namespace QuanLyCuaHangBanhMi.Forms.Administration
         private ModernButton btnEdit = null!;
         private ModernButton btnLock = null!;
         private Panel gridCard = null!;
-        private ModernDataGrid usersGrid = null!;
+        private DataGridView usersGrid = null!;
         private DataGridViewTextBoxColumn colSTT = null!;
         private DataGridViewTextBoxColumn colUserId = null!;
         private DataGridViewTextBoxColumn colUsername = null!;
