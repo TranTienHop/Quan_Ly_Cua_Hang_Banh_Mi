@@ -186,6 +186,59 @@ namespace QuanLyCuaHangBanhMi.Data
             public decimal AverageOrderValue;
         }
 
+        public struct DashboardSummary
+        {
+            public decimal TotalRevenue;
+            public int TotalOrders;
+            public decimal TotalItemsSold;
+            public decimal AverageOrderValue;
+            public decimal TotalDiscount;
+            public string TopProductName;
+        }
+
+        public static DashboardSummary GetDashboardSummary(DateTime fromDate, DateTime toDate, int branchId)
+        {
+            var summary = new DashboardSummary();
+            var rev = GetRevenueSummary(fromDate, toDate, branchId);
+            summary.TotalRevenue = rev.TotalRevenue;
+            summary.TotalOrders = rev.TotalOrders;
+            summary.TotalDiscount = rev.TotalDiscount;
+            summary.AverageOrderValue = rev.AverageOrderValue;
+
+            var prms = new List<SqlParameter>
+            {
+                new SqlParameter("@FromDate", fromDate.Date),
+                new SqlParameter("@ToDate", toDate.Date.AddDays(1).AddTicks(-1))
+            };
+            string branchFilter = "";
+            if (branchId > 0)
+            {
+                branchFilter = " AND hd.MaChiNhanh = @MaChiNhanh";
+                prms.Add(new SqlParameter("@MaChiNhanh", branchId));
+            }
+
+            try
+            {
+                if (IsQuanLyBanhMi())
+                {
+                    string sql = $@"
+                        SELECT ISNULL(SUM(ct.SoLuong), 0) AS TotalItemsSold
+                        FROM dbo.ChiTiet_HoaDon ct
+                        JOIN dbo.HoaDon hd ON ct.MaHoaDon = hd.MaHoaDon
+                        WHERE hd.TrangThaiThanhToan = 'DaTT'
+                          AND hd.NgayTao >= @FromDate AND hd.NgayTao <= @ToDate
+                          {branchFilter}";
+
+                    object? obj = DatabaseHelper.ExecuteScalar(sql, prms.ToArray());
+                    if (obj != null && obj != DBNull.Value)
+                        summary.TotalItemsSold = Convert.ToDecimal(obj);
+                }
+            }
+            catch { }
+
+            return summary;
+        }
+
         public static RevenueSummary GetRevenueSummary(DateTime fromDate, DateTime toDate, int branchId)
         {
             var summary = new RevenueSummary();

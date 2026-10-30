@@ -33,6 +33,10 @@ namespace QuanLyCuaHangBanhMi.Forms
             if (!UserSession.IsAdmin)
             {
                 btnNavEmployees.Visible = false;
+            }
+
+            if (!UserSession.IsManagerOrAdmin)
+            {
                 btnNavReports.Visible = false;
             }
 
@@ -95,7 +99,8 @@ namespace QuanLyCuaHangBanhMi.Forms
                 btnNavIngredients, btnNavReports, btnNavEmployees
             };
             int tab = Math.Clamp(tabIndex, 0, navButtons.Length - 1);
-            if (!UserSession.IsAdmin && (tab == 5 || tab == 6)) tab = 0;
+            if (!UserSession.IsAdmin && tab == 6) tab = 0;
+            if (!UserSession.IsManagerOrAdmin && tab == 5) tab = 0;
             if (!UserSession.IsManagerOrAdmin && tab == 3) tab = 0;
             if (!navButtons[tab].Visible) tab = 0;
             SwitchTab(tab, navButtons[tab]);
@@ -323,7 +328,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             AddQuick(1, "🥪", "Thực đơn", Color.FromArgb(52, 73, 94), () => NavigateToTab(1));
             AddQuick(2, "👤", "Khách hàng", Color.FromArgb(52, 152, 219), () => NavigateToTab(2));
             AddQuick(3, "🥬", "Kho NL", Color.FromArgb(39, 174, 96), () => NavigateToTab(4));
-            if (UserSession.IsAdmin)
+            if (UserSession.IsManagerOrAdmin)
                 AddQuick(4, "📊", "Báo cáo", Color.FromArgb(142, 68, 173), () => NavigateToTab(5));
             else
                 AddQuick(4, "🎁", "Khuyến mãi", Color.FromArgb(142, 68, 173), () => NavigateToTab(3));
@@ -1467,6 +1472,23 @@ namespace QuanLyCuaHangBanhMi.Forms
         private Label lblInvTotalImported = null!;
         private DataGridView dgvInventory = null!;
 
+        // 0. Controls Dashboard Tổng Quan Báo Cáo
+        private Panel pnlSubDashboard = null!;
+        private Button btnSubNavDashboard = null!;
+        private ComboBox cboRptDashPeriodPreset = null!;
+        private DateTimePicker dtpRptDashFrom = null!;
+        private DateTimePicker dtpRptDashTo = null!;
+        private ComboBox cboRptDashBranch = null!;
+        private Label lblRptDashTotalRevenue = null!;
+        private Label lblRptDashTotalOrders = null!;
+        private Label lblRptDashTotalItems = null!;
+        private Label lblRptDashAov = null!;
+        private Label lblRptDashTotalDiscount = null!;
+        private ReportChartView chartRptDashRevenueTrend = null!;
+        private ReportChartView chartRptDashBranch = null!;
+        private ReportChartView chartRptDashTopDishes = null!;
+        private ReportChartView chartRptDashCategory = null!;
+
         // 4. Controls Biểu Đồ Phân Tích
         private ComboBox cboChartType = null!;
         private DateTimePicker dtpChartFrom = null!;
@@ -1481,8 +1503,11 @@ namespace QuanLyCuaHangBanhMi.Forms
         private DateTimePicker dtpExpFrom = null!;
         private DateTimePicker dtpExpTo = null!;
         private ComboBox cboExpBranch = null!;
+        private RadioButton rdoExpExcel = null!;
+        private RadioButton rdoExpPdf = null!;
         private RadioButton rdoExpCsv = null!;
         private RadioButton rdoExpHtml = null!;
+        private ProgressBar prgExport = null!;
         private Label lblExpStatus = null!;
         private DataGridView dgvExpPreview = null!;
 
@@ -1502,18 +1527,19 @@ namespace QuanLyCuaHangBanhMi.Forms
             };
             tabReports.Controls.Add(pnlSubNav);
 
-            btnSubNavRev = CreateSubNavButton("💰 Báo Cáo Doanh Thu", 0);
-            btnSubNavBestSeller = CreateSubNavButton("🏆 Sản Phẩm Best Seller", 1);
-            btnSubNavInventory = CreateSubNavButton("📦 Tồn Kho & Tiêu Hao", 2);
-            btnSubNavChart = CreateSubNavButton("📊 Xuất Biểu Đồ Phân Tích", 3);
-            btnSubNavExport = CreateSubNavButton("📑 Xuất File Báo Cáo", 4);
+            btnSubNavDashboard = CreateSubNavButton("📈 Dashboard Tổng Quan", 0, 205);
+            btnSubNavRev = CreateSubNavButton("💰 Báo Cáo Doanh Thu", 1, 195);
+            btnSubNavBestSeller = CreateSubNavButton("🏆 Sản Phẩm Best Seller", 2, 200);
+            btnSubNavInventory = CreateSubNavButton("📦 Tồn Kho & Tiêu Hao", 3, 195);
+            btnSubNavChart = CreateSubNavButton("📊 Biểu Đồ Phân Tích", 4, 185);
+            btnSubNavExport = CreateSubNavButton("📑 Xuất File Báo Cáo", 5, 180);
 
             pnlSubNav.Controls.AddRange(new Control[]
             {
-                btnSubNavRev, btnSubNavBestSeller, btnSubNavInventory, btnSubNavChart, btnSubNavExport
+                btnSubNavDashboard, btnSubNavRev, btnSubNavBestSeller, btnSubNavInventory, btnSubNavChart, btnSubNavExport
             });
 
-            // Container chứa 5 panels con
+            // Container chứa 6 panels con
             pnlReportSubContainer = new Panel
             {
                 Dock = DockStyle.Fill,
@@ -1522,26 +1548,27 @@ namespace QuanLyCuaHangBanhMi.Forms
             tabReports.Controls.Add(pnlReportSubContainer);
             pnlReportSubContainer.BringToFront();
 
-            // Khởi tạo 5 view panels
+            // Khởi tạo 6 view panels
+            InitializeDashboardSubView();
             InitializeRevenueSubView();
             InitializeBestSellerSubView();
             InitializeInventorySubView();
             InitializeChartSubView();
             InitializeExportSubView();
 
-            // Mặc định mở view Doanh thu
+            // Mặc định mở view Dashboard Tổng Quan
             SwitchReportSubTab(0);
         }
 
-        private Button CreateSubNavButton(string text, int index)
+        private Button CreateSubNavButton(string text, int index, int width = 200)
         {
             var btn = new Button
             {
                 Text = text,
                 Dock = DockStyle.Left,
-                Width = 220,
+                Width = width,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
                 ForeColor = Color.Gainsboro,
                 BackColor = Color.FromArgb(44, 62, 80),
                 Cursor = Cursors.Hand
@@ -1555,8 +1582,8 @@ namespace QuanLyCuaHangBanhMi.Forms
         {
             _currentReportSubIndex = index;
 
-            var buttons = new[] { btnSubNavRev, btnSubNavBestSeller, btnSubNavInventory, btnSubNavChart, btnSubNavExport };
-            var panels = new[] { pnlSubRev, pnlSubBestSeller, pnlSubInventory, pnlSubChart, pnlSubExport };
+            var buttons = new[] { btnSubNavDashboard, btnSubNavRev, btnSubNavBestSeller, btnSubNavInventory, btnSubNavChart, btnSubNavExport };
+            var panels = new[] { pnlSubDashboard, pnlSubRev, pnlSubBestSeller, pnlSubInventory, pnlSubChart, pnlSubExport };
 
             for (int i = 0; i < buttons.Length; i++)
             {
@@ -1578,13 +1605,263 @@ namespace QuanLyCuaHangBanhMi.Forms
             // Nạp dữ liệu khi chuyển tab
             switch (index)
             {
-                case 0: LoadRevenueReport(); break;
-                case 1: LoadBestSellerReport(); break;
-                case 2: LoadInventoryReport(); break;
-                case 3: LoadChartReport(); break;
-                case 4: LoadExportPreview(); break;
+                case 0: LoadDashboardReport(); break;
+                case 1: LoadRevenueReport(); break;
+                case 2: LoadBestSellerReport(); break;
+                case 3: LoadInventoryReport(); break;
+                case 4: LoadChartReport(); break;
+                case 5: LoadExportPreview(); break;
             }
         }
+
+        #region --------------- 4.0 VIEW: DASHBOARD TỔNG QUAN BÁO CÁO ---------------
+
+        private void InitializeDashboardSubView()
+        {
+            pnlSubDashboard = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(245, 246, 250) };
+            pnlReportSubContainer.Controls.Add(pnlSubDashboard);
+
+            // 1. Filter Bar
+            var pnlFilter = new Panel { Dock = DockStyle.Top, Height = 56, BackColor = Color.White, Padding = new Padding(12, 10, 12, 10) };
+            pnlSubDashboard.Controls.Add(pnlFilter);
+
+            var lblPreset = new Label { Text = "Kỳ báo cáo:", Location = new Point(12, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            cboRptDashPeriodPreset = new ComboBox { Location = new Point(95, 13), Size = new Size(185, 26), DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9.5F) };
+            cboRptDashPeriodPreset.Items.AddRange(new object[]
+            {
+                "⚡ Dữ liệu mẫu (Tháng 9/2026)",
+                "📅 Hôm nay",
+                "📅 7 ngày gần nhất",
+                "📅 Tháng này",
+                "📅 Tháng trước",
+                "⚙️ Tùy chọn khoảng ngày"
+            });
+            cboRptDashPeriodPreset.SelectedIndex = 0;
+
+            var lblFrom = new Label { Text = "Từ:", Location = new Point(290, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            dtpRptDashFrom = new DateTimePicker { Location = new Point(320, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9.5F) };
+
+            var lblTo = new Label { Text = "Đến:", Location = new Point(438, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            dtpRptDashTo = new DateTimePicker { Location = new Point(475, 13), Size = new Size(110, 26), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 30), Font = new Font("Segoe UI", 9.5F) };
+
+            var lblBranch = new Label { Text = "Chi nhánh:", Location = new Point(595, 16), AutoSize = true, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            cboRptDashBranch = new ComboBox { Location = new Point(670, 13), Size = new Size(165, 26), DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9.5F) };
+
+            cboRptDashPeriodPreset.SelectedIndexChanged += (s, e) =>
+            {
+                DateTime today = DateTime.Today;
+                switch (cboRptDashPeriodPreset.SelectedIndex)
+                {
+                    case 0: // Tháng 9/2026
+                        dtpRptDashFrom.Value = new DateTime(2026, 9, 1);
+                        dtpRptDashTo.Value = new DateTime(2026, 9, 30);
+                        break;
+                    case 1: // Hôm nay
+                        dtpRptDashFrom.Value = today;
+                        dtpRptDashTo.Value = today;
+                        break;
+                    case 2: // 7 ngày qua
+                        dtpRptDashFrom.Value = today.AddDays(-6);
+                        dtpRptDashTo.Value = today;
+                        break;
+                    case 3: // Tháng này
+                        dtpRptDashFrom.Value = new DateTime(today.Year, today.Month, 1);
+                        dtpRptDashTo.Value = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
+                        break;
+                    case 4: // Tháng trước
+                        DateTime prev = today.AddMonths(-1);
+                        dtpRptDashFrom.Value = new DateTime(prev.Year, prev.Month, 1);
+                        dtpRptDashTo.Value = new DateTime(prev.Year, prev.Month, DateTime.DaysInMonth(prev.Year, prev.Month));
+                        break;
+                }
+                LoadDashboardReport();
+            };
+
+            var btnFilter = CreateActionButton("🔍 Tra Cứu", Color.FromArgb(41, 128, 185), new Point(845, 11), 95);
+            btnFilter.Click += (s, e) => LoadDashboardReport();
+
+            var btnExportExcel = CreateActionButton("📊 Xuất Excel", Color.FromArgb(39, 174, 96), new Point(948, 11), 105);
+            btnExportExcel.Click += (s, e) => ExportDashboardExcel();
+
+            var btnExportPdf = CreateActionButton("📕 Xuất PDF", Color.FromArgb(230, 126, 34), new Point(1060, 11), 95);
+            btnExportPdf.Click += (s, e) => ExportDashboardPdf();
+
+            pnlFilter.Controls.AddRange(new Control[]
+            {
+                lblPreset, cboRptDashPeriodPreset, lblFrom, dtpRptDashFrom, lblTo, dtpRptDashTo,
+                lblBranch, cboRptDashBranch, btnFilter, btnExportExcel, btnExportPdf
+            });
+
+            // 2. KPI Cards Panel
+            var pnlCards = new Panel { Dock = DockStyle.Top, Height = 95, BackColor = Color.FromArgb(245, 246, 250), Padding = new Padding(12, 10, 12, 10) };
+            pnlSubDashboard.Controls.Add(pnlCards);
+
+            CreateKpiCard(pnlCards, "TỔNG THỰC THU", out lblRptDashTotalRevenue, Color.FromArgb(39, 174, 96), 12, 10, 240, 75);
+            CreateKpiCard(pnlCards, "TỔNG ĐƠN HÀNG", out lblRptDashTotalOrders, Color.FromArgb(41, 128, 185), 258, 10, 210, 75);
+            CreateKpiCard(pnlCards, "SỐ LƯỢNG MÓN BÁN", out lblRptDashTotalItems, Color.FromArgb(22, 160, 133), 474, 10, 210, 75);
+            CreateKpiCard(pnlCards, "GIÁ TRỊ ĐƠN TRUNG BÌNH (AOV)", out lblRptDashAov, Color.FromArgb(142, 68, 173), 690, 10, 240, 75);
+            CreateKpiCard(pnlCards, "TỔNG TIỀN GIẢM GIÁ", out lblRptDashTotalDiscount, Color.FromArgb(230, 126, 34), 936, 10, 220, 75);
+
+            // 3. Vùng chứa 4 Biểu Đồ Thống Kê (2x2 Grid)
+            var tableCharts = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                RowCount = 2,
+                ColumnCount = 2,
+                Padding = new Padding(12, 4, 12, 12),
+                BackColor = Color.FromArgb(245, 246, 250)
+            };
+            tableCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+
+            chartRptDashRevenueTrend = new ReportChartView { Dock = DockStyle.Fill, Margin = new Padding(4) };
+            chartRptDashBranch = new ReportChartView { Dock = DockStyle.Fill, Margin = new Padding(4) };
+            chartRptDashTopDishes = new ReportChartView { Dock = DockStyle.Fill, Margin = new Padding(4) };
+            chartRptDashCategory = new ReportChartView { Dock = DockStyle.Fill, Margin = new Padding(4) };
+
+            tableCharts.Controls.Add(chartRptDashRevenueTrend, 0, 0);
+            tableCharts.Controls.Add(chartRptDashBranch, 1, 0);
+            tableCharts.Controls.Add(chartRptDashTopDishes, 0, 1);
+            tableCharts.Controls.Add(chartRptDashCategory, 1, 1);
+
+            pnlSubDashboard.Controls.Add(tableCharts);
+            tableCharts.BringToFront();
+        }
+
+        private void LoadDashboardReport()
+        {
+            try
+            {
+                int branchId = 0;
+                if (cboRptDashBranch.SelectedValue is int bId) branchId = bId;
+
+                DateTime from = dtpRptDashFrom.Value;
+                DateTime to = dtpRptDashTo.Value;
+
+                // 1. Chỉ số KPI
+                var summary = ReportService.GetDashboardSummary(from, to, branchId);
+                lblRptDashTotalRevenue.Text = summary.TotalRevenue.ToString("N0", _vnCulture) + " đ";
+                lblRptDashTotalOrders.Text = summary.TotalOrders.ToString("N0", _vnCulture) + " đơn";
+                lblRptDashTotalItems.Text = summary.TotalItemsSold.ToString("N0", _vnCulture) + " món";
+                lblRptDashAov.Text = summary.AverageOrderValue.ToString("N0", _vnCulture) + " đ/đơn";
+                lblRptDashTotalDiscount.Text = summary.TotalDiscount.ToString("N0", _vnCulture) + " đ";
+
+                string periodStr = $"Thời gian: {from:dd/MM/yyyy} - {to:dd/MM/yyyy}";
+                string branchText = cboRptDashBranch.Text;
+
+                // 2. Biểu đồ doanh thu theo ngày
+                chartRptDashRevenueTrend.Title = "📈 DOANH THU THEO NGÀY";
+                chartRptDashRevenueTrend.Subtitle = $"{periodStr} | {branchText}";
+                chartRptDashRevenueTrend.ChartType = ReportChartType.Bar;
+                chartRptDashRevenueTrend.DataPoints = ReportService.GetDailyRevenueChartData(from, to, branchId);
+                chartRptDashRevenueTrend.Invalidate();
+
+                // 3. Biểu đồ doanh thu theo chi nhánh
+                chartRptDashBranch.Title = "🏪 DOANH THU THEO CHI NHÁNH";
+                chartRptDashBranch.Subtitle = periodStr;
+                chartRptDashBranch.ChartType = ReportChartType.Bar;
+                chartRptDashBranch.DataPoints = ReportService.GetBranchRevenueChartData(from, to);
+                chartRptDashBranch.Invalidate();
+
+                // 4. Biểu đồ món bán chạy
+                chartRptDashTopDishes.Title = "🏆 TOP 10 MÓN BÁN CHẠY NHẤT";
+                chartRptDashTopDishes.Subtitle = $"{periodStr} | {branchText}";
+                chartRptDashTopDishes.ChartType = ReportChartType.HorizontalBar;
+                chartRptDashTopDishes.DataPoints = ReportService.GetTopProductsChartData(from, to, branchId, 10);
+                chartRptDashTopDishes.Invalidate();
+
+                // 5. Biểu đồ cơ cấu doanh thu theo danh mục
+                chartRptDashCategory.Title = "🥧 CƠ CẤU DOANH THU THEO DANH MỤC";
+                chartRptDashCategory.Subtitle = $"{periodStr} | {branchText}";
+                chartRptDashCategory.ChartType = ReportChartType.Pie;
+                chartRptDashCategory.DataPoints = ReportService.GetCategoryRevenueChartData(from, to, branchId);
+                chartRptDashCategory.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi cập nhật Dashboard: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void ExportDashboardExcel()
+        {
+            try
+            {
+                int branchId = 0;
+                if (cboRptDashBranch.SelectedValue is int bId) branchId = bId;
+
+                DateTime from = dtpRptDashFrom.Value;
+                DateTime to = dtpRptDashTo.Value;
+                string period = $"{from:dd/MM/yyyy} - {to:dd/MM/yyyy}";
+                string branchText = cboRptDashBranch.Text;
+
+                DataTable dt = ReportService.GetRevenueReport(from, to, branchId, false);
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu trong khoảng thời gian đã chọn để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var kpis = new Dictionary<string, string>
+                {
+                    { "Tổng Thực Thu", lblRptDashTotalRevenue.Text },
+                    { "Tổng Đơn Hàng", lblRptDashTotalOrders.Text },
+                    { "Tổng Món Đã Bán", lblRptDashTotalItems.Text },
+                    { "Giá Trị Đơn Trung Bình", lblRptDashAov.Text },
+                    { "Tổng Tiền Giảm Giá", lblRptDashTotalDiscount.Text }
+                };
+
+                await ReportExportHelper.ExportToExcelAsync(
+                    dt, "Báo Cáo Tổng Quan Dashboard Doanh Thu", period, branchText, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi xuất Excel Dashboard: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void ExportDashboardPdf()
+        {
+            try
+            {
+                int branchId = 0;
+                if (cboRptDashBranch.SelectedValue is int bId) branchId = bId;
+
+                DateTime from = dtpRptDashFrom.Value;
+                DateTime to = dtpRptDashTo.Value;
+                string period = $"{from:dd/MM/yyyy} - {to:dd/MM/yyyy}";
+                string branchText = cboRptDashBranch.Text;
+
+                DataTable dt = ReportService.GetRevenueReport(from, to, branchId, false);
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu trong khoảng thời gian đã chọn để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var kpis = new Dictionary<string, string>
+                {
+                    { "Tổng Thực Thu", lblRptDashTotalRevenue.Text },
+                    { "Tổng Đơn Hàng", lblRptDashTotalOrders.Text },
+                    { "Tổng Món Đã Bán", lblRptDashTotalItems.Text },
+                    { "Giá Trị Đơn Trung Bình", lblRptDashAov.Text },
+                    { "Tổng Tiền Giảm Giá", lblRptDashTotalDiscount.Text }
+                };
+
+                await ReportExportHelper.ExportToPdfAsync(
+                    dt, "Báo Cáo Tổng Quan Dashboard Doanh Thu", period, branchText, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi xuất PDF Dashboard: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
 
         #region --------------- 4.1 VIEW: BÁO CÁO DOANH THU ---------------
 
@@ -1693,7 +1970,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
         }
 
-        private void ExportRevenueData(bool isHtml)
+        private async void ExportRevenueData(bool isPdf)
         {
             if (dgvRevenue.DataSource is not DataTable dt || dt.Rows.Count == 0)
             {
@@ -1711,11 +1988,18 @@ namespace QuanLyCuaHangBanhMi.Forms
                 { "Giá Trị Đơn Trung Bình", lblRevAov.Text }
             };
 
-            bool ok = isHtml
-                ? ReportExportHelper.ExportToHtml(dt, "Báo Cáo Doanh Thu Bán Hàng", period, branchName, kpis, out string p)
-                : ReportExportHelper.ExportToCsv(dt, "Báo Cáo Doanh Thu Bán Hàng", period, branchName, kpis, out p);
-
-            if (ok) ReportExportHelper.PromptOpenFile(p);
+            if (isPdf)
+            {
+                await ReportExportHelper.ExportToPdfAsync(
+                    dt, "Báo Cáo Doanh Thu Bán Hàng", period, branchName, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
+            else
+            {
+                await ReportExportHelper.ExportToExcelAsync(
+                    dt, "Báo Cáo Doanh Thu Bán Hàng", period, branchName, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
         }
 
         #endregion
@@ -1865,7 +2149,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
         }
 
-        private void ExportBestSellerData(bool isHtml)
+        private async void ExportBestSellerData(bool isPdf)
         {
             if (dgvBestSeller.DataSource is not DataTable dt || dt.Rows.Count == 0)
             {
@@ -1882,11 +2166,18 @@ namespace QuanLyCuaHangBanhMi.Forms
                 { "Tổng Sản Phẩm Bán Ra", lblTopTotalSold.Text }
             };
 
-            bool ok = isHtml
-                ? ReportExportHelper.ExportToHtml(dt, "Báo Cáo Sản Phẩm Best Seller", period, branchName, kpis, out string p)
-                : ReportExportHelper.ExportToCsv(dt, "Báo Cáo Sản Phẩm Best Seller", period, branchName, kpis, out p);
-
-            if (ok) ReportExportHelper.PromptOpenFile(p);
+            if (isPdf)
+            {
+                await ReportExportHelper.ExportToPdfAsync(
+                    dt, "Báo Cáo Sản Phẩm Best Seller", period, branchName, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
+            else
+            {
+                await ReportExportHelper.ExportToExcelAsync(
+                    dt, "Báo Cáo Sản Phẩm Best Seller", period, branchName, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
         }
 
         #endregion
@@ -2013,7 +2304,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
         }
 
-        private void ExportInventoryData(bool isHtml)
+        private async void ExportInventoryData(bool isPdf)
         {
             if (dgvInventory.DataSource is not DataTable dt || dt.Rows.Count == 0)
             {
@@ -2031,11 +2322,18 @@ namespace QuanLyCuaHangBanhMi.Forms
                 { "Tổng Lượng Đã Nhập Kho", lblInvTotalImported.Text }
             };
 
-            bool ok = isHtml
-                ? ReportExportHelper.ExportToHtml(dt, "Báo Cáo Tồn Kho & Tiêu Hao Nguyên Liệu", period, branchName, kpis, out string p)
-                : ReportExportHelper.ExportToCsv(dt, "Báo Cáo Tồn Kho & Tiêu Hao Nguyên Liệu", period, branchName, kpis, out p);
-
-            if (ok) ReportExportHelper.PromptOpenFile(p);
+            if (isPdf)
+            {
+                await ReportExportHelper.ExportToPdfAsync(
+                    dt, "Báo Cáo Tồn Kho & Tiêu Hao Nguyên Liệu", period, branchName, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
+            else
+            {
+                await ReportExportHelper.ExportToExcelAsync(
+                    dt, "Báo Cáo Tồn Kho & Tiêu Hao Nguyên Liệu", period, branchName, kpis, null, null,
+                    savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+            }
         }
 
         #endregion
@@ -2212,14 +2510,14 @@ namespace QuanLyCuaHangBanhMi.Forms
             split.Panel1.Controls.Add(grpConfig);
 
             // 1. Chọn loại báo cáo
-            var grpType = new GroupBox { Text = "1. Chọn loại báo cáo", Location = new Point(15, 30), Size = new Size(340, 125), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            rdoExpRev = new RadioButton { Text = "💰 Báo cáo Doanh thu bán hàng", Location = new Point(15, 25), Size = new Size(300, 24), Checked = true, Font = new Font("Segoe UI", 9.5F) };
-            rdoExpBestSeller = new RadioButton { Text = "🏆 Báo cáo Sản phẩm Best Seller", Location = new Point(15, 55), Size = new Size(300, 24), Font = new Font("Segoe UI", 9.5F) };
-            rdoExpInv = new RadioButton { Text = "📦 Báo cáo Tồn kho & Tiêu hao nguyên liệu", Location = new Point(15, 85), Size = new Size(310, 24), Font = new Font("Segoe UI", 9.5F) };
+            var grpType = new GroupBox { Text = "1. Chọn loại báo cáo", Location = new Point(15, 25), Size = new Size(340, 115), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            rdoExpRev = new RadioButton { Text = "💰 Báo cáo Doanh thu bán hàng", Location = new Point(15, 24), Size = new Size(300, 24), Checked = true, Font = new Font("Segoe UI", 9.5F) };
+            rdoExpBestSeller = new RadioButton { Text = "🏆 Báo cáo Sản phẩm Best Seller", Location = new Point(15, 52), Size = new Size(300, 24), Font = new Font("Segoe UI", 9.5F) };
+            rdoExpInv = new RadioButton { Text = "📦 Báo cáo Tồn kho & Tiêu hao nguyên liệu", Location = new Point(15, 80), Size = new Size(310, 24), Font = new Font("Segoe UI", 9.5F) };
             grpType.Controls.AddRange(new Control[] { rdoExpRev, rdoExpBestSeller, rdoExpInv });
 
             // 2. Phạm vi dữ liệu
-            var grpRange = new GroupBox { Text = "2. Phạm vi dữ liệu", Location = new Point(15, 165), Size = new Size(340, 140), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            var grpRange = new GroupBox { Text = "2. Phạm vi dữ liệu", Location = new Point(15, 145), Size = new Size(340, 135), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
             var lblF = new Label { Text = "Từ ngày:", Location = new Point(15, 28), AutoSize = true, Font = new Font("Segoe UI", 9F) };
             dtpExpFrom = new DateTimePicker { Location = new Point(90, 25), Size = new Size(130, 24), Format = DateTimePickerFormat.Short, Value = new DateTime(2026, 9, 1), Font = new Font("Segoe UI", 9F) };
 
@@ -2231,17 +2529,19 @@ namespace QuanLyCuaHangBanhMi.Forms
             grpRange.Controls.AddRange(new Control[] { lblF, dtpExpFrom, lblT, dtpExpTo, lblB, cboExpBranch });
 
             // 3. Định dạng xuất
-            var grpFormat = new GroupBox { Text = "3. Định dạng tệp xuất", Location = new Point(15, 315), Size = new Size(340, 95), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
-            rdoExpCsv = new RadioButton { Text = "📊 Tệp Microsoft Excel (.csv UTF-8 BOM)", Location = new Point(15, 26), Size = new Size(310, 24), Checked = true, Font = new Font("Segoe UI", 9.5F) };
-            rdoExpHtml = new RadioButton { Text = "📄 Báo cáo HTML In ấn / Xuất PDF (.html)", Location = new Point(15, 56), Size = new Size(310, 24), Font = new Font("Segoe UI", 9.5F) };
-            grpFormat.Controls.AddRange(new Control[] { rdoExpCsv, rdoExpHtml });
+            var grpFormat = new GroupBox { Text = "3. Định dạng tệp xuất", Location = new Point(15, 285), Size = new Size(340, 130), Font = new Font("Segoe UI", 9.5F, FontStyle.Bold) };
+            rdoExpExcel = new RadioButton { Text = "📊 Tệp Microsoft Excel (*.xlsx)", Location = new Point(15, 22), Size = new Size(310, 24), Checked = true, Font = new Font("Segoe UI", 9.5F) };
+            rdoExpPdf = new RadioButton { Text = "📕 Tệp Adobe PDF (*.pdf)", Location = new Point(15, 48), Size = new Size(310, 24), Font = new Font("Segoe UI", 9.5F) };
+            rdoExpCsv = new RadioButton { Text = "📄 Tệp CSV chuẩn (*.csv UTF-8)", Location = new Point(15, 74), Size = new Size(310, 24), Font = new Font("Segoe UI", 9.5F) };
+            rdoExpHtml = new RadioButton { Text = "🌐 Báo cáo HTML (*.html)", Location = new Point(15, 100), Size = new Size(310, 24), Font = new Font("Segoe UI", 9.5F) };
+            grpFormat.Controls.AddRange(new Control[] { rdoExpExcel, rdoExpPdf, rdoExpCsv, rdoExpHtml });
 
             // Buttons
             var btnPreview = new Button
             {
                 Text = "🔍 Xem Trước Dữ Liệu (Preview)",
                 Location = new Point(15, 425),
-                Size = new Size(340, 38),
+                Size = new Size(340, 35),
                 BackColor = Color.FromArgb(52, 73, 94),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -2251,11 +2551,25 @@ namespace QuanLyCuaHangBanhMi.Forms
             btnPreview.FlatAppearance.BorderSize = 0;
             btnPreview.Click += (s, e) => LoadExportPreview();
 
+            var btnPrintPreview = new Button
+            {
+                Text = "🖨️ Xem Trước Bản In & In (Print Preview)",
+                Location = new Point(15, 466),
+                Size = new Size(340, 35),
+                BackColor = Color.FromArgb(41, 128, 185),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnPrintPreview.FlatAppearance.BorderSize = 0;
+            btnPrintPreview.Click += (s, e) => ExecutePrintPreview();
+
             var btnExecute = new Button
             {
                 Text = "🚀 TIẾN HÀNH XUẤT FILE BÁO CÁO",
-                Location = new Point(15, 475),
-                Size = new Size(340, 50),
+                Location = new Point(15, 508),
+                Size = new Size(340, 48),
                 BackColor = Color.FromArgb(230, 126, 34),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -2263,9 +2577,19 @@ namespace QuanLyCuaHangBanhMi.Forms
                 Cursor = Cursors.Hand
             };
             btnExecute.FlatAppearance.BorderSize = 0;
-            btnExecute.Click += (s, e) => ExecuteExportFile();
+            btnExecute.Click += (s, e) => ExecuteExportFile(btnExecute);
 
-            grpConfig.Controls.AddRange(new Control[] { grpType, grpRange, grpFormat, btnPreview, btnExecute });
+            prgExport = new ProgressBar
+            {
+                Location = new Point(15, 564),
+                Size = new Size(340, 22),
+                Minimum = 0,
+                Maximum = 100,
+                Value = 0,
+                Style = ProgressBarStyle.Continuous
+            };
+
+            grpConfig.Controls.AddRange(new Control[] { grpType, grpRange, grpFormat, btnPreview, btnPrintPreview, btnExecute, prgExport });
 
             // ================= BÊN PHẢI: XEM TRƯỚC (PREVIEW) =================
             var grpPreview = new GroupBox
@@ -2335,7 +2659,7 @@ namespace QuanLyCuaHangBanhMi.Forms
             }
         }
 
-        private void ExecuteExportFile()
+        private void ExecutePrintPreview()
         {
             try
             {
@@ -2346,11 +2670,10 @@ namespace QuanLyCuaHangBanhMi.Forms
                 DateTime to = dtpExpTo.Value;
                 string period = $"{from:dd/MM/yyyy} - {to:dd/MM/yyyy}";
                 string branchName = cboExpBranch.Text;
-                bool isHtml = rdoExpHtml.Checked;
 
                 DataTable dt;
                 string title;
-                Dictionary<string, string> kpis = new Dictionary<string, string>();
+                var kpis = new Dictionary<string, string>();
 
                 if (rdoExpRev.Checked)
                 {
@@ -2390,22 +2713,136 @@ namespace QuanLyCuaHangBanhMi.Forms
 
                 if (dt.Rows.Count == 0)
                 {
+                    MessageBox.Show("Không có dữ liệu trong khoảng thời gian đã chọn để in!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                ReportExportHelper.ShowPrintPreview(this, dt, title, period, branchName, kpis);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi xem trước bản in: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void ExecuteExportFile(Button? triggerButton = null)
+        {
+            try
+            {
+                int branchId = 0;
+                if (cboExpBranch.SelectedValue is int bId) branchId = bId;
+
+                DateTime from = dtpExpFrom.Value;
+                DateTime to = dtpExpTo.Value;
+                string period = $"{from:dd/MM/yyyy} - {to:dd/MM/yyyy}";
+                string branchName = cboExpBranch.Text;
+
+                DataTable dt;
+                string title;
+                var kpis = new Dictionary<string, string>();
+
+                lblExpStatus.Text = "Đang chuẩn bị dữ liệu báo cáo...";
+                prgExport.Value = 10;
+
+                if (rdoExpRev.Checked)
+                {
+                    title = "Báo Cáo Doanh Thu Bán Hàng";
+                    dt = ReportService.GetRevenueReport(from, to, branchId, false);
+                    var sum = ReportService.GetRevenueSummary(from, to, branchId);
+                    kpis["Tổng Thực Thu"] = sum.TotalRevenue.ToString("N0", _vnCulture) + " đ";
+                    kpis["Tổng Đơn Hàng"] = sum.TotalOrders.ToString("N0", _vnCulture) + " đơn";
+                    kpis["Tổng Giảm Giá"] = sum.TotalDiscount.ToString("N0", _vnCulture) + " đ";
+                    kpis["Giá Trị Đơn Trung Bình"] = sum.AverageOrderValue.ToString("N0", _vnCulture) + " đ";
+                }
+                else if (rdoExpBestSeller.Checked)
+                {
+                    title = "Báo Cáo Sản Phẩm Bán Chạy (Best Seller)";
+                    dt = ReportService.GetBestSellerReport(from, to, branchId, 0, 0, false);
+                    decimal totalSold = 0;
+                    foreach (DataRow r in dt.Rows) totalSold += Convert.ToDecimal(r["Số Lượng Đã Bán"]);
+                    kpis["Tổng Sản Phẩm Bán Ra"] = totalSold.ToString("N0", _vnCulture);
+                    if (dt.Rows.Count > 0)
+                        kpis["Món Bán Chạy Nhất"] = dt.Rows[0]["Tên Sản Phẩm"].ToString() ?? "";
+                }
+                else
+                {
+                    title = "Báo Cáo Tồn Kho & Tiêu Hao Nguyên Liệu";
+                    dt = ReportService.GetInventoryConsumptionReport(branchId, false, "", from, to);
+                    int lowCount = 0;
+                    decimal totalConsumed = 0;
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        if (r["Trạng Thái Cảnh Báo"].ToString()!.Contains("Sắp Hết")) lowCount++;
+                        totalConsumed += Convert.ToDecimal(r["Tiêu Hao Bán Hàng"]);
+                    }
+                    kpis["Tổng Mặt Hàng"] = dt.Rows.Count.ToString();
+                    kpis["Cảnh Báo Sắp Hết"] = lowCount.ToString() + " mặt hàng";
+                    kpis["Tổng Lượng Tiêu Hao"] = totalConsumed.ToString("N0", _vnCulture);
+                }
+
+                if (dt.Rows.Count == 0)
+                {
+                    prgExport.Value = 0;
+                    lblExpStatus.Text = "Không có dữ liệu trong khoảng thời gian đã chọn.";
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian đã chọn để xuất file!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                bool ok = isHtml
-                    ? ReportExportHelper.ExportToHtml(dt, title, period, branchName, kpis, out string savedPath)
-                    : ReportExportHelper.ExportToCsv(dt, title, period, branchName, kpis, out savedPath);
+                dgvExpPreview.DataSource = dt;
 
-                if (ok)
+                if (triggerButton != null) triggerButton.Enabled = false;
+                Cursor = Cursors.WaitCursor;
+
+                var progress = new Progress<int>(p =>
                 {
-                    ReportExportHelper.PromptOpenFile(savedPath);
+                    prgExport.Value = Math.Clamp(p, 0, 100);
+                });
+
+                var statusProgress = new Progress<string>(msg =>
+                {
+                    lblExpStatus.Text = msg;
+                });
+
+                if (rdoExpExcel.Checked)
+                {
+                    await ReportExportHelper.ExportToExcelAsync(
+                        dt, title, period, branchName, kpis, progress, statusProgress,
+                        savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+                }
+                else if (rdoExpPdf.Checked)
+                {
+                    await ReportExportHelper.ExportToPdfAsync(
+                        dt, title, period, branchName, kpis, progress, statusProgress,
+                        savedPath => ReportExportHelper.PromptOpenFile(savedPath));
+                }
+                else if (rdoExpCsv.Checked)
+                {
+                    if (ReportExportHelper.ExportToCsv(dt, title, period, branchName, kpis, out string savedPath))
+                    {
+                        prgExport.Value = 100;
+                        lblExpStatus.Text = "Xuất file CSV thành công!";
+                        ReportExportHelper.PromptOpenFile(savedPath);
+                    }
+                }
+                else
+                {
+                    if (ReportExportHelper.ExportToHtml(dt, title, period, branchName, kpis, out string savedPath))
+                    {
+                        prgExport.Value = 100;
+                        lblExpStatus.Text = "Xuất file HTML thành công!";
+                        ReportExportHelper.PromptOpenFile(savedPath);
+                    }
                 }
             }
             catch (Exception ex)
             {
+                lblExpStatus.Text = "Lỗi xuất file: " + ex.Message;
                 MessageBox.Show("Lỗi xuất file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (triggerButton != null) triggerButton.Enabled = true;
+                Cursor = Cursors.Default;
             }
         }
 
@@ -2419,11 +2856,23 @@ namespace QuanLyCuaHangBanhMi.Forms
             {
                 // Nạp danh sách chi nhánh và danh mục vào các ComboBox
                 DataTable dtBranches = ReportService.GetBranches();
-                BindCombo(cboRevBranch, dtBranches, "TenChiNhanh", "MaChiNhanh");
+                BindCombo(cboRptDashBranch, dtBranches.Copy(), "TenChiNhanh", "MaChiNhanh");
+                BindCombo(cboRevBranch, dtBranches.Copy(), "TenChiNhanh", "MaChiNhanh");
                 BindCombo(cboTopBranch, dtBranches.Copy(), "TenChiNhanh", "MaChiNhanh");
                 BindCombo(cboInvBranch, dtBranches.Copy(), "TenChiNhanh", "MaChiNhanh");
                 BindCombo(cboChartBranch, dtBranches.Copy(), "TenChiNhanh", "MaChiNhanh");
                 BindCombo(cboExpBranch, dtBranches.Copy(), "TenChiNhanh", "MaChiNhanh");
+
+                // Nếu MANAGER có chi nhánh cụ thể (> 0) thì mặc định chọn chi nhánh của mình
+                if (!UserSession.IsAdmin && UserSession.MaChiNhanh > 0)
+                {
+                    cboRptDashBranch.SelectedValue = UserSession.MaChiNhanh;
+                    cboRevBranch.SelectedValue = UserSession.MaChiNhanh;
+                    cboTopBranch.SelectedValue = UserSession.MaChiNhanh;
+                    cboInvBranch.SelectedValue = UserSession.MaChiNhanh;
+                    cboChartBranch.SelectedValue = UserSession.MaChiNhanh;
+                    cboExpBranch.SelectedValue = UserSession.MaChiNhanh;
+                }
 
                 DataTable dtCats = ReportService.GetCategories();
                 BindCombo(cboTopCategory, dtCats, "TenDanhMuc", "MaDanhMuc");
